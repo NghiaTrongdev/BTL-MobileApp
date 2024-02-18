@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="value20">20</integer>
+    <integer name="value15">15</integer>
+    <integer name="value10">10</integer>
+
+</resources>

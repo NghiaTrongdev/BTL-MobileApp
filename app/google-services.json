@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "123526799075",
+    "project_id": "btlandroidapp-e3721",
+    "storage_bucket": "btlandroidapp-e3721.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123526799075:android:8dc5035a876d09926e6fd6",
+        "android_client_info": {
+          "package_name": "com.example.btlmobileapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB911LJaeOzUJNFkplobAwLkwIqo1x9lm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

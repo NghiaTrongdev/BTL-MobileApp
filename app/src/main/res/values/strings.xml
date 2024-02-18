@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BTLMobileApp</string>
+    <string name="ng_k">Đăng ký</string>
+    <string name="ng_nh_p">Đăng nhập</string>
+    <string name="titleLogin">Đăng nhập</string>
+    <string name="notifilogin">Vui lòng nhập số điện thoại và mật khẩu để đăng nhập</string>
+    <string name="username">UserName</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
