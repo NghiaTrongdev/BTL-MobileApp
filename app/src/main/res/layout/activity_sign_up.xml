@@ -114,7 +114,7 @@
                     android:textColorHighlight="@color/cardview_dark_background"
                     />
                 <EditText
-                    android:id="@+id/inputUser"
+                    android:id="@+id/inputEmail"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -200,7 +200,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <FrameLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -212,10 +212,17 @@
                         android:text="@string/sign_up"
                         android:backgroundTint="@color/purple"
                         android:textSize="17sp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
+
                         />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ProgressBar
+                        android:id="@+id/progressbar"
+                        android:layout_gravity="center"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:visibility="invisible"
+
+                        />
+                </FrameLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <View

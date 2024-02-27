@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             ScaleAnimation scaleAnimation  = new ScaleAnimation(0.8f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(300);
+            scaleAnimation.setDuration(200);
             scaleAnimation.setFillAfter(true);
             binding.layoutHome.startAnimation(scaleAnimation);
 
@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(new FragmentProfile());
 
 
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(0.8f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(300);
+            ScaleAnimation scaleAnimation  = new ScaleAnimation(1.0f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
+            scaleAnimation.setDuration(200);
             scaleAnimation.setFillAfter(true);
             binding.layoutAccount.startAnimation(scaleAnimation);
 
@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(new FragmentListFriend());
 
 
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(0.8f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(300);
+            ScaleAnimation scaleAnimation  = new ScaleAnimation(1.0f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
+            scaleAnimation.setDuration(200);
             scaleAnimation.setFillAfter(true);
             binding.layoutListFriend.startAnimation(scaleAnimation);
 
