@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.FragmentHome"
-    android:background="@color/black">
+    android:background="@color/background_message_container">
 
-    <!-- TODO: Update blank fragment layout -->
+    
 
 
 </LinearLayout>
