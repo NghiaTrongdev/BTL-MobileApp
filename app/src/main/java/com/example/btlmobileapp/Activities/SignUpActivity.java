@@ -144,13 +144,13 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
     );
-    private void isLoading(boolean loading){
-        if(loading){
-            binding.progressbar.setVisibility(View.INVISIBLE);
-            binding.buttonSignUp.setVisibility(View.VISIBLE);
-        } else {
-            binding.progressbar.setVisibility(View.VISIBLE);
+    private void isLoading(boolean loading) {
+        if (loading) {
             binding.buttonSignUp.setVisibility(View.INVISIBLE);
+            binding.progressbar.setVisibility(View.VISIBLE);
+        } else {
+            binding.buttonSignUp.setVisibility(View.VISIBLE);
+            binding.progressbar.setVisibility(View.INVISIBLE);
         }
     }
 
