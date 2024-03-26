@@ -44,79 +44,22 @@ public class MainActivity extends AppCompatActivity {
         binding.viewBackground.setVisibility(View.INVISIBLE);
     }
     private void setListener(){
-        binding.layoutHome.setOnClickListener(v ->{
+        binding.imageHome.setOnClickListener( v->{
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-
-            binding.textHome.setVisibility(View.VISIBLE);
-            binding.textAccount.setVisibility(View.GONE);
-            binding.textListFriend.setVisibility(View.GONE);
-
-            binding.textHome.setTextColor(getResources().getColor(R.color.purple));
-
-            binding.layoutHome.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_nav_select));
-            binding.layoutAccount.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-            binding.layoutListFriend.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-
-            replaceFragment(new FragmentHome());
-
-
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(0.8f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(200);
-            scaleAnimation.setFillAfter(true);
-            binding.layoutHome.startAnimation(scaleAnimation);
-
-
         });
-        binding.layoutAccount.setOnClickListener(v->{
+
+        binding.imageAccount.setOnClickListener( v->{
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-
-            binding.textHome.setVisibility(View.GONE);
-            binding.textAccount.setVisibility(View.VISIBLE);
-            binding.textListFriend.setVisibility(View.GONE);
-
-            binding.textAccount.setTextColor(getResources().getColor(R.color.purple));
-
-            binding.layoutAccount.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_nav_select));
-            binding.layoutHome.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-            binding.layoutListFriend.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-
-            replaceFragment(new FragmentProfile());
-
-
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(1.0f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(200);
-            scaleAnimation.setFillAfter(true);
-            binding.layoutAccount.startAnimation(scaleAnimation);
-
-
         });
-        binding.layoutListFriend.setOnClickListener(v->{
+
+        binding.imageListFriend.setOnClickListener( v->{
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
-
-            binding.textHome.setVisibility(View.GONE);
-            binding.textAccount.setVisibility(View.GONE);
-            binding.textListFriend.setVisibility(View.VISIBLE);
-
-            binding.textListFriend.setTextColor(getResources().getColor(R.color.purple));
-
-            binding.layoutListFriend.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_nav_select));
-            binding.layoutHome.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-            binding.layoutAccount.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-
-            replaceFragment(new FragmentListFriend());
-
-
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(1.0f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(200);
-            scaleAnimation.setFillAfter(true);
-            binding.layoutListFriend.startAnimation(scaleAnimation);
-
         });
 
         binding.textSearch.setOnClickListener(v -> {
