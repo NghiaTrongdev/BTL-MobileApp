@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.btlmobileapp.Fragments.FragmentHome;
 import com.example.btlmobileapp.Fragments.FragmentListFriend;
@@ -34,10 +35,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new FragmentHome());
-
+        init();
         setListener();
     }
-
+    private void init(){
+        binding.inputSearch.setVisibility(View.INVISIBLE);
+        binding.buttonBackforSearch.setVisibility(View.INVISIBLE);
+        binding.viewBackground.setVisibility(View.INVISIBLE);
+    }
     private void setListener(){
         binding.layoutHome.setOnClickListener(v ->{
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
@@ -113,6 +118,38 @@ public class MainActivity extends AppCompatActivity {
             binding.layoutListFriend.startAnimation(scaleAnimation);
 
         });
+
+        binding.textSearch.setOnClickListener(v -> {
+            binding.inputSearch.setVisibility(View.VISIBLE);
+            binding.inputSearch.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(binding.inputSearch, InputMethodManager.SHOW_IMPLICIT);
+            }
+            binding.textSearch.setVisibility(View.INVISIBLE);
+            binding.buttonBackforSearch.setVisibility(View.VISIBLE);
+            binding.buttonSearch.setVisibility(View.INVISIBLE);
+            binding.viewBackground.setVisibility(View.VISIBLE);
+        });
+        binding.inputSearch.setOnClickListener(v->{
+            binding.textSearch.setVisibility(View.INVISIBLE);
+            binding.buttonBackforSearch.setVisibility(View.VISIBLE);
+            binding.buttonSearch.setVisibility(View.INVISIBLE);
+            binding.viewBackground.setVisibility(View.VISIBLE);
+        });
+        binding.buttonBackforSearch.setOnClickListener(v->{
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(binding.inputSearch.getWindowToken(), 0);
+            }
+            binding.viewBackground.setVisibility(View.INVISIBLE);
+            binding.buttonBackforSearch.setVisibility(View.INVISIBLE);
+            binding.buttonSearch.setVisibility(View.VISIBLE);
+            binding.inputSearch.clearFocus();
+            binding.textSearch.setVisibility(View.VISIBLE);
+            binding.inputSearch.setVisibility(View.INVISIBLE);
+        });
+
     }
 
     private void replaceFragment(Fragment fragment){
