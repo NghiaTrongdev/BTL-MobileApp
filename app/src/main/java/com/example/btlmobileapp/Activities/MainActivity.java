@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.btlmobileapp.Fragments.FragmentHome;
 import com.example.btlmobileapp.Fragments.FragmentListFriend;
 import com.example.btlmobileapp.Fragments.FragmentProfile;
+import com.example.btlmobileapp.Fragments.FragmentSearch;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
@@ -66,15 +67,18 @@ public class MainActivity extends AppCompatActivity {
 
         binding.textSearch.setOnClickListener(v -> {
             binding.inputSearch.setVisibility(View.VISIBLE);
+
             binding.inputSearch.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.showSoftInput(binding.inputSearch, InputMethodManager.SHOW_IMPLICIT);
             }
+
             binding.textSearch.setVisibility(View.INVISIBLE);
             binding.buttonBackforSearch.setVisibility(View.VISIBLE);
+            replaceFragment(new FragmentSearch());
             binding.buttonSearch.setVisibility(View.INVISIBLE);
-            binding.viewBackground.setVisibility(View.VISIBLE);
+//            binding.viewBackground.setVisibility(View.VISIBLE);
         });
         binding.inputSearch.setOnClickListener(v->{
             binding.textSearch.setVisibility(View.INVISIBLE);
@@ -93,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             binding.inputSearch.clearFocus();
             binding.textSearch.setVisibility(View.VISIBLE);
             binding.inputSearch.setVisibility(View.INVISIBLE);
+            replaceFragment(new FragmentHome());
         });
 
 
@@ -100,7 +105,12 @@ public class MainActivity extends AppCompatActivity {
     }
     private void query(String stringQuery){
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection(Constants.KEY_COLLECTION_USERS);
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo(Constants.KEY_PHONE,stringQuery)
+                .get()
+                .addOnCompleteListener(v -> {
+
+                });
     }
 
     private void replaceFragment(Fragment fragment){
@@ -108,5 +118,9 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layoutMain,fragment);
         fragmentTransaction.commit();
+    }
+    private void isLoading(boolean loading)
+    {
+
     }
 }
