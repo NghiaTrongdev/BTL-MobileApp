@@ -22,7 +22,9 @@ import com.example.btlmobileapp.Fragments.FragmentHome;
 import com.example.btlmobileapp.Fragments.FragmentListFriend;
 import com.example.btlmobileapp.Fragments.FragmentProfile;
 import com.example.btlmobileapp.R;
+import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -93,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
             binding.inputSearch.setVisibility(View.INVISIBLE);
         });
 
+
+
+    }
+    private void query(String stringQuery){
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection(Constants.KEY_COLLECTION_USERS);
     }
 
     private void replaceFragment(Fragment fragment){
