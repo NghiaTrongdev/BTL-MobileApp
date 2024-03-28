@@ -31,7 +31,10 @@ import kotlin.UShort;
 public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding binding;
     private String imageEncoded;
+    private String imageEncodedDefault;
+
     private PreferenceManager preferenceManager;
+    private int sizeofDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         listener();
+        setDefaultAvata();
     }
     private void listener(){
         binding.imageBack.setOnClickListener(v -> onBackPressed());
@@ -73,19 +77,29 @@ public class SignUpActivity extends AppCompatActivity {
         user.put(Constants.KEY_PHONE,binding.inputPhone.getText().toString().trim());
         user.put(Constants.KEY_PASSWORD,binding.inputPassword.getText().toString().trim());
         user.put(Constants.KEY_IS_ONLINE,true);
+        if (imageEncoded == null){
+            user.put(Constants.KEY_IMAGE,imageEncodedDefault);
+        } else {
+            user.put(Constants.KEY_IMAGE,imageEncoded);
+        }
         user.put(Constants.KEY_BIO,"");
         user.put(Constants.KEY_CREATE_DATE,new Date());
         user.put(Constants.KEY_DATE_OF_BIRTH,new Date());
         user.put(Constants.KEY_ROLE,Constants.KEY_ROLE_MEMBER);
         user.put(Constants.KEY_LAST_LOGIN ,"");
-        user.put(Constants.KEY_IMAGE,imageEncoded);
+        user.put(Constants.KEY_GENDER,"");
+
 
         database.collection(Constants.KEY_COLLECTION_USERS).add(user)
                 .addOnSuccessListener(documentReference -> {
                     preferenceManager.putBoolean(Constants.KEY_IS_ONLINE,true);
                     preferenceManager.putString(Constants.KEY_USER_ID,documentReference.getId());
                     preferenceManager.putString(Constants.KEY_USER_NAME,binding.inputName.getText().toString().trim());
-                    preferenceManager.putString(Constants.KEY_IMAGE,imageEncoded);
+                    if (imageEncoded == null){
+                        preferenceManager.putString(Constants.KEY_IMAGE,imageEncodedDefault);
+                    } else {
+                        preferenceManager.putString(Constants.KEY_IMAGE,imageEncoded);
+                    }
 
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -153,6 +167,14 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
     );
+    private void setDefaultAvata(){
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.avata_default);
+        imageEncodedDefault = encodeImage(bitmap);
+    }
+    private int getSize(){
+
+        return  0;
+    }
     private void isLoading(boolean loading) {
         if (loading) {
             binding.buttonSignUp.setVisibility(View.INVISIBLE);
