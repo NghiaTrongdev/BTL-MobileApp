@@ -50,7 +50,7 @@ public class FragmentSearch extends Fragment {
     }
 
     private  void init(){
-        binding.textTest.setText("Hello");
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
