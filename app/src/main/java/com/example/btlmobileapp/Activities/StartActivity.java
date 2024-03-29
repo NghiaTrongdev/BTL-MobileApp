@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.btlmobileapp.R;
+// import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.databinding.ActivityStartBinding;
 
 public class StartActivity extends AppCompatActivity {

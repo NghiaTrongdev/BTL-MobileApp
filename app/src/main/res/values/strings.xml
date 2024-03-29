@@ -10,4 +10,7 @@
     <string name="sign_up">Sign up</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="listfiend">ListFiend</string>
+    <string name="useravatar">UserAvatar</string>
+    <string name="phonenumber">Phonenumber</string>
 </resources>
