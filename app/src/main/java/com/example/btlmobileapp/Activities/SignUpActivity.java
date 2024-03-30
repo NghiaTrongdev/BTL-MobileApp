@@ -23,7 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
+
+import kotlin.UShort;
 
 public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding binding;

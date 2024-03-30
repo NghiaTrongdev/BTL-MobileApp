@@ -7,6 +7,7 @@
     android:clipToPadding="false"
     android:background="@color/black"
     tools:context=".Activities.MainActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -16,18 +17,51 @@
         app:layout_constraintEnd_toEndOf="parent"
 
         >
-       <androidx.appcompat.widget.AppCompatImageView
-           android:id="@+id/buttonSearch"
-           android:layout_width="50dp"
-           android:layout_height="50dp"
-           android:padding="8dp"
-           app:layout_constraintTop_toTopOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           android:src="@drawable/search"
-           app:tint="@color/white"
 
-           />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/buttonSearch"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/search"
+            app:tint="@color/white"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/buttonBackforSearch"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="12dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/back_icon"
+            app:tint="@color/white"
+            android:visibility="invisible"
+
+            />
+        <EditText
+            android:id="@+id/inputSearch"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:maxLines="1"
+            android:textStyle="normal"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:background="@drawable/background_input_search"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/buttonSearch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:paddingStart="10dp"
+            android:paddingVertical="5dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="70dp"
+            android:visibility="invisible"
+            />
         <TextView
+            android:id="@+id/textSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,9 +71,11 @@
             android:textStyle="normal"
             android:textColor="@color/white"
             android:textSize="17sp"
+            android:visibility="visible"
             android:text="Tìm kiếm"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <View
         android:id="@+id/viewSupport"
         android:background="@color/white"
@@ -49,11 +85,24 @@
         app:layout_constraintStart_toStartOf="parent"
         android:alpha="0.5"
         />
+    <View
+        android:id="@+id/viewBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/viewSupport"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/black"
+        android:alpha="50"
+        android:visibility="invisible"
+        android:padding="10dp"
+        />
     <FrameLayout
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:layout_marginTop="5dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
         app:layout_constraintTop_toBottomOf="@id/viewSupport"
@@ -61,125 +110,49 @@
 
     <LinearLayout
         android:id="@+id/linear"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:weightSum="4"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
         android:elevation="10dp"
         android:gravity="center_horizontal"
         android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:baselineAligned="false">
-        <LinearLayout
-            android:id="@+id/layoutHome"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+
+        <ImageView
+            android:id="@+id/imageHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/background_nav_select"
-            android:gravity="center"
-            >
-            <ImageView
-                android:id="@+id/imageHome"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/home_iconthin"
-                android:layout_gravity="center"
-                app:tint="@color/purple"
+            android:adjustViewBounds="true"
+            android:src="@drawable/home_iconthin"
+            android:layout_gravity="center"
+            app:tint="@color/purple"/>
 
-                />
-            <TextView
-                android:id="@+id/textHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/purple"
-                android:textSize="16sp"
-
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutListFriend"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+        <ImageView
+            android:id="@+id/imageListFriend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            >
-            <ImageView
-                android:id="@+id/imageListFriend"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/contact_page"
-                android:layout_gravity="center"
-                app:tint="@color/blue_background"
+            android:adjustViewBounds="true"
+            android:src="@drawable/contact_page_thin_icon"
+            android:layout_gravity="center"
+            app:tint="@color/blue_background"/>
 
-                />
-            <TextView
-                android:id="@+id/textListFriend"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Friend"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/purple"
-                android:textSize="16sp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutAccount"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+        <ImageView
+            android:id="@+id/imageAccount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            >
-            <ImageView
-                android:id="@+id/imageAccount"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/account"
-                android:layout_gravity="center"
-                app:tint="@color/blue_background"
-
-                />
-            <TextView
-                android:id="@+id/textAccount"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Account"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/purple"
-                android:textSize="16sp"
-                />
-        </LinearLayout>
+            android:adjustViewBounds="true"
+            android:src="@drawable/persion_thin_icon"
+            android:layout_gravity="center"
+            android:layout_marginEnd="18dp"
+            app:tint="@color/blue_background"/>
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

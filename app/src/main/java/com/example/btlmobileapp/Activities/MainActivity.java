@@ -16,17 +16,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.btlmobileapp.Fragments.FragmentHome;
 import com.example.btlmobileapp.Fragments.FragmentListFriend;
 import com.example.btlmobileapp.Fragments.FragmentProfile;
+import com.example.btlmobileapp.Fragments.FragmentSearch;
 import com.example.btlmobileapp.R;
+import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
 
-     ActivityMainBinding binding;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,85 +38,79 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new FragmentHome());
-
+        init();
         setListener();
     }
-
+    private void init(){
+        binding.inputSearch.setVisibility(View.INVISIBLE);
+        binding.buttonBackforSearch.setVisibility(View.INVISIBLE);
+        binding.viewBackground.setVisibility(View.INVISIBLE);
+    }
     private void setListener(){
-        binding.layoutHome.setOnClickListener(v ->{
+        binding.imageHome.setOnClickListener( v->{
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-
-            binding.textHome.setVisibility(View.VISIBLE);
-            binding.textAccount.setVisibility(View.GONE);
-            binding.textListFriend.setVisibility(View.GONE);
-
-            binding.textHome.setTextColor(getResources().getColor(R.color.purple));
-
-            binding.layoutHome.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_nav_select));
-            binding.layoutAccount.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-            binding.layoutListFriend.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-
-            replaceFragment(new FragmentHome());
-
-
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(0.8f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(200);
-            scaleAnimation.setFillAfter(true);
-            binding.layoutHome.startAnimation(scaleAnimation);
-
-
         });
-        binding.layoutAccount.setOnClickListener(v->{
+
+        binding.imageAccount.setOnClickListener( v->{
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-
-            binding.textHome.setVisibility(View.GONE);
-            binding.textAccount.setVisibility(View.VISIBLE);
-            binding.textListFriend.setVisibility(View.GONE);
-
-            binding.textAccount.setTextColor(getResources().getColor(R.color.purple));
-
-            binding.layoutAccount.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_nav_select));
-            binding.layoutHome.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-            binding.layoutListFriend.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-
-            replaceFragment(new FragmentProfile());
-
-
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(1.0f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(200);
-            scaleAnimation.setFillAfter(true);
-            binding.layoutAccount.startAnimation(scaleAnimation);
-
-
         });
-        binding.layoutListFriend.setOnClickListener(v->{
+
+        binding.imageListFriend.setOnClickListener( v->{
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
-
-            binding.textHome.setVisibility(View.GONE);
-            binding.textAccount.setVisibility(View.GONE);
-            binding.textListFriend.setVisibility(View.VISIBLE);
-
-            binding.textListFriend.setTextColor(getResources().getColor(R.color.purple));
-
-            binding.layoutListFriend.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_nav_select));
-            binding.layoutHome.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-            binding.layoutAccount.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-
-            replaceFragment(new FragmentListFriend());
-
-
-            ScaleAnimation scaleAnimation  = new ScaleAnimation(1.0f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,0.0f);
-            scaleAnimation.setDuration(200);
-            scaleAnimation.setFillAfter(true);
-            binding.layoutListFriend.startAnimation(scaleAnimation);
-
         });
+
+        binding.textSearch.setOnClickListener(v -> {
+            binding.inputSearch.setVisibility(View.VISIBLE);
+
+            binding.inputSearch.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(binding.inputSearch, InputMethodManager.SHOW_IMPLICIT);
+            }
+
+            binding.textSearch.setVisibility(View.INVISIBLE);
+            binding.buttonBackforSearch.setVisibility(View.VISIBLE);
+            replaceFragment(new FragmentSearch());
+            binding.buttonSearch.setVisibility(View.INVISIBLE);
+//            binding.viewBackground.setVisibility(View.VISIBLE);
+        });
+        binding.inputSearch.setOnClickListener(v->{
+            binding.textSearch.setVisibility(View.INVISIBLE);
+            binding.buttonBackforSearch.setVisibility(View.VISIBLE);
+            binding.buttonSearch.setVisibility(View.INVISIBLE);
+            binding.viewBackground.setVisibility(View.VISIBLE);
+        });
+        binding.buttonBackforSearch.setOnClickListener(v->{
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(binding.inputSearch.getWindowToken(), 0);
+            }
+            binding.viewBackground.setVisibility(View.INVISIBLE);
+            binding.buttonBackforSearch.setVisibility(View.INVISIBLE);
+            binding.buttonSearch.setVisibility(View.VISIBLE);
+            binding.inputSearch.clearFocus();
+            binding.textSearch.setVisibility(View.VISIBLE);
+            binding.inputSearch.setVisibility(View.INVISIBLE);
+            replaceFragment(new FragmentHome());
+        });
+
+
+
+    }
+    private void query(String stringQuery){
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo(Constants.KEY_PHONE,stringQuery)
+                .get()
+                .addOnCompleteListener(v -> {
+
+                });
     }
 
     private void replaceFragment(Fragment fragment){
@@ -120,5 +118,9 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layoutMain,fragment);
         fragmentTransaction.commit();
+    }
+    private void isLoading(boolean loading)
+    {
+
     }
 }
