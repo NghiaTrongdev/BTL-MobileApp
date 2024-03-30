@@ -1,7 +1,6 @@
 package com.example.btlmobileapp.Activities;
 
 
-
 import static java.security.AccessController.getContext;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,28 +40,35 @@ public class MainActivity extends AppCompatActivity {
         init();
         setListener();
     }
-    private void init(){
+
+    private void init() {
         binding.inputSearch.setVisibility(View.INVISIBLE);
         binding.buttonBackforSearch.setVisibility(View.INVISIBLE);
         binding.viewBackground.setVisibility(View.INVISIBLE);
     }
-    private void setListener(){
-        binding.imageHome.setOnClickListener( v->{
+
+    private void setListener() {
+        binding.imageHome.setOnClickListener(v -> {
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
+
+            // replaceFragment(new FragmentHome());
         });
 
-        binding.imageAccount.setOnClickListener( v->{
+        binding.imageAccount.setOnClickListener(v -> {
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
+            replaceFragment(new FragmentProfile());
         });
 
-        binding.imageListFriend.setOnClickListener( v->{
+        binding.imageListFriend.setOnClickListener(v -> {
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
+
+            replaceFragment(new FragmentListFriend());
         });
 
         binding.textSearch.setOnClickListener(v -> {
@@ -80,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
             binding.buttonSearch.setVisibility(View.INVISIBLE);
 //            binding.viewBackground.setVisibility(View.VISIBLE);
         });
-        binding.inputSearch.setOnClickListener(v->{
+        binding.inputSearch.setOnClickListener(v -> {
             binding.textSearch.setVisibility(View.INVISIBLE);
             binding.buttonBackforSearch.setVisibility(View.VISIBLE);
             binding.buttonSearch.setVisibility(View.INVISIBLE);
             binding.viewBackground.setVisibility(View.VISIBLE);
         });
-        binding.buttonBackforSearch.setOnClickListener(v->{
+        binding.buttonBackforSearch.setOnClickListener(v -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.hideSoftInputFromWindow(binding.inputSearch.getWindowToken(), 0);
@@ -101,26 +107,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
-    private void query(String stringQuery){
+
+    private void query(String stringQuery) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
-                .whereEqualTo(Constants.KEY_PHONE,stringQuery)
+                .whereEqualTo(Constants.KEY_PHONE, stringQuery)
                 .get()
                 .addOnCompleteListener(v -> {
 
                 });
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.layoutMain,fragment);
+        fragmentTransaction.replace(R.id.layoutMain, fragment);
         fragmentTransaction.commit();
     }
-    private void isLoading(boolean loading)
-    {
+
+    private void isLoading(boolean loading) {
 
     }
 }

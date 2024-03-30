@@ -16,10 +16,10 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public User(String id, String name, String phone) {
+    public User(String id, String name, String phoneNumber) {
         this.id = id;
         this.name = name;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
     }
 
     public User(String id, String name, String phone, String image) {

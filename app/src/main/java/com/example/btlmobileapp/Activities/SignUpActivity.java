@@ -68,17 +68,23 @@ public class SignUpActivity extends AppCompatActivity {
 
         // tạo đối tượng user để lưu trữ
         HashMap<String, Object> user = new HashMap<>();
-        user.put(Constants.KEY_NAME,binding.inputName.getText().toString().trim());
+        user.put(Constants.KEY_USER_NAME,binding.inputName.getText().toString().trim());
         user.put(Constants.KEY_EMAIL,binding.inputEmail.getText().toString().trim());
         user.put(Constants.KEY_PHONE,binding.inputPhone.getText().toString().trim());
         user.put(Constants.KEY_PASSWORD,binding.inputPassword.getText().toString().trim());
+        user.put(Constants.KEY_IS_ONLINE,true);
+        user.put(Constants.KEY_BIO,"");
+        user.put(Constants.KEY_CREATE_DATE,new Date());
+        user.put(Constants.KEY_DATE_OF_BIRTH,new Date());
+        user.put(Constants.KEY_ROLE,Constants.KEY_ROLE_MEMBER);
+        user.put(Constants.KEY_LAST_LOGIN ,"");
         user.put(Constants.KEY_IMAGE,imageEncoded);
 
         database.collection(Constants.KEY_COLLECTION_USERS).add(user)
                 .addOnSuccessListener(documentReference -> {
-                    preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN,true);
+                    preferenceManager.putBoolean(Constants.KEY_IS_ONLINE,true);
                     preferenceManager.putString(Constants.KEY_USER_ID,documentReference.getId());
-                    preferenceManager.putString(Constants.KEY_NAME,binding.inputName.getText().toString().trim());
+                    preferenceManager.putString(Constants.KEY_USER_NAME,binding.inputName.getText().toString().trim());
                     preferenceManager.putString(Constants.KEY_IMAGE,imageEncoded);
 
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);

@@ -61,7 +61,7 @@ public class ListFriendAdapter
                 .setText(list.get(position).name);
 
         viewHolder.phone_number
-                .setText(list.get(position).phone);
+                .setText(list.get(position).phoneNumber);
 
         // Bug: Can not load the image by the uri
 

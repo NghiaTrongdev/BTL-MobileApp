@@ -136,9 +136,7 @@
                     android:layout_height="20dp"
                     app:layout_constraintTop_toTopOf="@id/textRemember"
                     app:layout_constraintEnd_toStartOf="@id/textRemember"
-                    android:layout_marginEnd="7dp"
-
-                    />
+                    android:layout_marginEnd="7dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
