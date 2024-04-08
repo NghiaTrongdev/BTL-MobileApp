@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
 
-            // replaceFragment(new FragmentHome());
+             replaceFragment(new FragmentHome());
         });
 
         binding.imageAccount.setOnClickListener(v -> {
