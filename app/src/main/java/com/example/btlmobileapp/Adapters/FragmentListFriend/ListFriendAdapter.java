@@ -1,13 +1,11 @@
 package com.example.btlmobileapp.Adapters.FragmentListFriend;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btlmobileapp.Models.User;
@@ -67,8 +65,9 @@ public class ListFriendAdapter
 
         String userImageUri = list.get(position).image;
         if (userImageUri != null) {
-            viewHolder.avatar_view.setImageURI(Uri.parse(userImageUri));
-            viewHolder.avatar_view.invalidate();
+            // new ImageLoadTask(userImageUri, viewHolder.avatar_view).execute();
+            //viewHolder.avatar_view.setImageURI(Uri.parse(userImageUri));
+            GetBitMap.getBitmapUrl(userImageUri, viewHolder.avatar_view);
         } else
             // Set the Default avatar image.
             viewHolder.avatar_view.setImageResource(R.drawable.default_avatar_icon);

@@ -33,6 +33,7 @@ android {
     buildFeatures{
         viewBinding = true
     }
+    buildToolsVersion = "34.0.0"
 }
 
 dependencies {
@@ -59,4 +60,7 @@ dependencies {
 
     // multidex
     implementation ("androidx.multidex:multidex:2.0.1")
+
+    // Picasso
+    implementation ("com.squareup.picasso:picasso:2.71828")
 }
