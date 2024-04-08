@@ -11,6 +11,10 @@ public class Constants {
     public static final String KEY_IS_ONLINE = "isOnline";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_BIO = "bio";
+    public static final String KEY_GENDER = "gender";
+    public static final String KEY_GENDER_FEMALE = "female";
+    public static final String KEY_GENDER_MALE = "male";
+
     public static final String KEY_CREATE_DATE = "createDate";
     public static final String KEY_DATE_OF_BIRTH = "birthdate";
     public static final int KEY_ROLE_MEMBER = 0;

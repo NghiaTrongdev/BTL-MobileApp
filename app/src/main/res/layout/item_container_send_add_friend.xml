@@ -14,6 +14,7 @@
         android:background="@drawable/background_image_item"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="centerCrop"
         />
     <View
         android:id="@+id/viewSupport"
