@@ -84,7 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
             // tạo đối tượng user để lưu trữ
             HashMap<String, Object> user = new HashMap<>();
             user.put(Constants.KEY_USER_ID,userId);
-            user.put(Constants.KEY_USER_NAME,binding.inputName.getText().toString().trim());
+            user.put(Constants.KEY_NAME,binding.inputName.getText().toString().trim());
             user.put(Constants.KEY_EMAIL,binding.inputEmail.getText().toString().trim());
             user.put(Constants.KEY_PHONE,binding.inputPhone.getText().toString().trim());
             user.put(Constants.KEY_PASSWORD,binding.inputPassword.getText().toString().trim());
@@ -189,14 +189,13 @@ public class SignUpActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.avata_default);
         imageEncodedDefault = encodeImage(bitmap);
     }
-    private int getSize(){
-
-        return  0;
-    }
+//    private int getSize(){
+//
+//        return  0;
+//    }
     private CompletableFuture<String> autoCreateIdAsync() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         CompletableFuture<String> future = new CompletableFuture<>();
-
         database.collection(Constants.KEY_COLLECTION_USERS).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 QuerySnapshot queryDocumentSnapshots = task.getResult();
@@ -211,7 +210,6 @@ public class SignUpActivity extends AppCompatActivity {
                 future.completeExceptionally(task.getException());
             }
         });
-
         return future;
     }
     private void isLoading(boolean loading) {
