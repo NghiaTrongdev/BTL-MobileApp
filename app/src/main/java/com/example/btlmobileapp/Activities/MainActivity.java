@@ -192,26 +192,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.layoutMain, fragment);
         fragmentTransaction.commit();
     }
-    private void testSendData(){
-        List<User> list = new ArrayList<>();
 
-        // Data testing
-        list.add(new User("1", "user1", "0123"));
-        list.add(new User("2", "User2", "0456"));
-        list.add(new User("3", "User3", "0666"));
-        list.add(new User("4", "user4", "0123"));
-        list.add(new User("5", "User5", "0456"));
-        list.add(new User("6", "User6", "0666"));
-        list.add(new User("7", "user7", "0123"));
-        list.add(new User("8", "User8", "0456"));
-        list.add(new User("9", "User9", "0666"));
-        list.add(new User("10", "user10", "0123"));
-        list.add(new User("11", "User11", "0456"));
-        list.add(new User("12", "User12", "0666"));
-        FragmentSearch fragmentSearch = new FragmentSearch();
-        replaceFragment(fragmentSearch);
-        fragmentSearch.onDataReceived(list);
-    }
 
     @Override
     protected void onDestroy() {
@@ -219,5 +200,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void sendAddFriend(){
+        String senderId = "user001";
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+
     }
 }

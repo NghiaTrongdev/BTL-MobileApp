@@ -135,7 +135,7 @@
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
+        android:background="@color/black"
         android:layout_marginTop="5dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"

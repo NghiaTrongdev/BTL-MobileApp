@@ -73,6 +73,46 @@ public class SignUpActivity extends AppCompatActivity {
 
         return true;
     }
+
+    private CompletableFuture<String> autoCreateRelationshipIdAsync(){
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        CompletableFuture<String> future = new CompletableFuture<>();
+        database.collection(Constants.KEY_RELATION_COLLECTION)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        QuerySnapshot queryDocumentSnapshots = task.getResult();
+                        if (queryDocumentSnapshots.isEmpty()){
+                            future.complete("relation001");
+                        } else {
+                            int size = queryDocumentSnapshots.size();
+                            future.complete(String.format("relation%03d",size +1));
+                        }
+                    } else {
+                        future.completeExceptionally(task.getException());
+                    }
+                });
+        return future;
+    }
+    private CompletableFuture<String> autoCreateIdAsync() {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        CompletableFuture<String> future = new CompletableFuture<>();
+        database.collection(Constants.KEY_COLLECTION_USERS).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot queryDocumentSnapshots = task.getResult();
+                if (queryDocumentSnapshots.isEmpty()) {
+                    future.complete("user001");
+                } else {
+                    int size = queryDocumentSnapshots.size();
+                    future.complete(String.format("user%03d", size + 1));
+                }
+            } else {
+                // Xử lý lỗi nếu có
+                future.completeExceptionally(task.getException());
+            }
+        });
+        return future;
+    }
     private void signUp(){
 
         isLoading(true);
@@ -189,29 +229,8 @@ public class SignUpActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.avata_default);
         imageEncodedDefault = encodeImage(bitmap);
     }
-//    private int getSize(){
-//
-//        return  0;
-//    }
-    private CompletableFuture<String> autoCreateIdAsync() {
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        CompletableFuture<String> future = new CompletableFuture<>();
-        database.collection(Constants.KEY_COLLECTION_USERS).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                QuerySnapshot queryDocumentSnapshots = task.getResult();
-                if (queryDocumentSnapshots.isEmpty()) {
-                    future.complete("user001");
-                } else {
-                    int size = queryDocumentSnapshots.size();
-                    future.complete(String.format("user%03d", size + 1));
-                }
-            } else {
-                // Xử lý lỗi nếu có
-                future.completeExceptionally(task.getException());
-            }
-        });
-        return future;
-    }
+
+
     private void isLoading(boolean loading) {
         if (loading) {
             binding.buttonSignUp.setVisibility(View.INVISIBLE);
