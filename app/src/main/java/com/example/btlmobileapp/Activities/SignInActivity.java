@@ -111,42 +111,42 @@ public class SignInActivity extends AppCompatActivity {
 
     private void Login() {
 //        isLoading(true);
-//        String username = binding.inputUser.getText().toString().trim();
-//        String password = binding.inputPassword.getText().toString().trim();
-//
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        database.collection(Constants.KEY_COLLECTION_USERS)
-//                .where(Filter .or(
-//                    Filter.equalTo(Constants.KEY_EMAIL , username),
-//                        Filter.equalTo(Constants.KEY_PHONE,username)
-//                ))
-//                .whereEqualTo(Constants.KEY_PASSWORD,password)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if(task.getResult() != null && task.isSuccessful() && task.getResult().getDocuments().size() >0 ){
-//                        // Document snapshot sẽ chứa dữ liệu của collection
-//                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-//
-//                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN,true);
-//                        preferenceManager.putString(Constants.KEY_USER_ID,documentSnapshot.getId());
-//                        preferenceManager.putString(Constants.KEY_NAME,documentSnapshot.getString(Constants.KEY_NAME));
-//                        preferenceManager.putString(Constants.KEY_NAME,documentSnapshot.getString(Constants.KEY_IMAGE));
-//
-//                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//                    } else {
-//                        isLoading(false);
-//                        showToast("Failed to login");
-//                    }
-//                });
+        String username = binding.inputUser.getText().toString().trim();
+        String password = binding.inputPassword.getText().toString().trim();
+
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .where(Filter.or(
+                        Filter.equalTo(Constants.KEY_EMAIL, username),
+                        Filter.equalTo(Constants.KEY_PHONE, username)
+                ))
+                .whereEqualTo(Constants.KEY_PASSWORD, password)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.getResult() != null && task.isSuccessful() && task.getResult().getDocuments().size() > 0) {
+                        // Document snapshot sẽ chứa dữ liệu của collection
+                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+
+                        preferenceManager.putBoolean(Constants.KEY_IS_ONLINE, true);
+                        preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
+                        preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                        preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_IMAGE));
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        isLoading(false);
+                        showToast("Failed to login");
+                    }
+                });
 
         if (binding.buttonRemember.isChecked())
             rememberLogin();
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
     }
 
     private void rememberLogin() {
