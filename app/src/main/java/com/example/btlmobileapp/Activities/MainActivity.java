@@ -240,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
     private void getAllUser() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
+                .orderBy(Constants.KEY_USER_ID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -297,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
         String userId2 = user2.getString(Constants.KEY_USER_ID);
 
         String relationshipId = userId1 + userId2;
-
             FirebaseFirestore database = FirebaseFirestore.getInstance();
 
             HashMap<String, Object> relationship = new HashMap<>();
