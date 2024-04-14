@@ -1,5 +1,7 @@
 package com.example.btlmobileapp.Fragments;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.btlmobileapp.Adapters.FragmentListFriend.ListFriendItemClickListener;
 import com.example.btlmobileapp.Adapters.FragmentListFriend.ListFriendAdapter;
+import com.example.btlmobileapp.Adapters.SearchResultAdapter;
 import com.example.btlmobileapp.MediaStorage.MediaStoreImage;
 import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.Utilities.PreferenceManager;
+import com.example.btlmobileapp.databinding.ActivityMainBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,10 +34,18 @@ import java.util.List;
 public class FragmentListFriend extends Fragment {
     private RecyclerView friendRecyclerView;
     private List<User> userList;
+    private List<User> requestUserList;
     private LiveData<List<MediaStoreImage>> avatars;
     private PreferenceManager preferenceManager;
+    private Button btnTypeFriends;
+    private Button btnTypeRequests;
+
     ListFriendAdapter adapter;
+    SearchResultAdapter adapter2;
     ListFriendItemClickListener listener = new ListFriendItemClickListener();
+    ActivityMainBinding binding;
+
+    private String tab = "friend";
 
     public FragmentListFriend(PreferenceManager preferenceManager) {
         this.preferenceManager = preferenceManager;
@@ -57,14 +70,41 @@ public class FragmentListFriend extends Fragment {
         if (currentView == null)
             return;
 
+        btnTypeFriends = (Button) currentView.findViewById(R.id.btnTypFriends);
+        btnTypeRequests = (Button) currentView.findViewById(R.id.btnTypeRequests);
         friendRecyclerView
                 = (RecyclerView) currentView.findViewById(
                 R.id.friend_recycler_view);
-        userList = getData();
 
-        adapter = new ListFriendAdapter(
-                userList, FragmentListFriend.this.getContext(), listener);
-        friendRecyclerView.setAdapter(adapter);
+        btnTypeFriends.setOnClickListener(v -> {
+            userList = getData();
+            adapter = new ListFriendAdapter(
+                    userList, FragmentListFriend.this.getContext(), listener);
+            friendRecyclerView.setAdapter(adapter);
+
+            btnTypeFriends.setTextColor(Color.BLUE);
+            btnTypeRequests.setTextColor(Color.argb(255, 150, 150, 150));
+        });
+
+        btnTypeRequests.setOnClickListener(v -> {
+            userList = getRequests();
+            adapter2 = new SearchResultAdapter(userList);
+            friendRecyclerView.setAdapter(adapter2);
+
+            btnTypeRequests.setTextColor(Color.BLUE);
+            btnTypeFriends.setTextColor(Color.argb(255, 150, 150, 150));
+        });
+
+//        if (tab.equals("friends")) {
+//            userList = getData();
+//            adapter = new ListFriendAdapter(
+//                    userList, FragmentListFriend.this.getContext(), listener);
+//            friendRecyclerView.setAdapter(adapter);
+//        } else {
+//            userList = getRequests();
+//            adapter2 = new SearchResultAdapter(userList);
+//            friendRecyclerView.setAdapter(adapter2);
+//        }
 
         android.content.Context context = this.getContext();
         if (context != null)
@@ -89,29 +129,37 @@ public class FragmentListFriend extends Fragment {
 //        list.add(new User("11", "User11", "0456"));
 //        list.add(new User("12", "User12", "0666"));
 
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//
+//        // Get Current User
+//        DocumentSnapshot currentUser = database.collection(Constants.KEY_COLLECTION_USERS)
+//                .whereEqualTo(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
+//                .get().getResult()
+//                .getDocuments()
+//                .get(0);
+//
+//        // Get Friends
+//        database.collection(Constants.KEY_COLLECTION_USERS)
+//                .whereNotEqualTo(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
+//                .orderBy(Constants.KEY_USER_ID)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
+//                        for (DocumentSnapshot doc : documents) {
+//                            if (IsFriend(doc, currentUser))
+//                                list.add(new User(doc.getString(Constants.KEY_USER_ID),
+//                                        doc.getString(Constants.KEY_USER_NAME),
+//                                        doc.getString(Constants.KEY_PHONE)));
+//                        }
+//                    }
+//                });
 
-        // Get Current User
-        DocumentSnapshot currentUser = database.collection(Constants.KEY_COLLECTION_USERS)
-                .whereEqualTo(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
-                .get().getResult().getDocuments().get(0);
+        return list;
+    }
 
-        // Get Friends
-        database.collection(Constants.KEY_COLLECTION_USERS)
-                .whereNotEqualTo(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
-                .orderBy(Constants.KEY_USER_ID)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
-                        for (DocumentSnapshot doc : documents) {
-                            if (IsFriend(doc, currentUser))
-                                list.add(new User(doc.getString(Constants.KEY_USER_ID),
-                                        doc.getString(Constants.KEY_USER_NAME),
-                                        doc.getString(Constants.KEY_PHONE)));
-                        }
-                    }
-                });
+    public List<User> getRequests() {
+        List<User> list = new ArrayList<>();
 
         return list;
     }

@@ -69,18 +69,13 @@ public class ListFriendAdapter
         viewHolder.phone_number
                 .setText(list.get(position).phoneNumber);
 
-        // Bug: Can not load the image by the uri
-
         String userImageUri = list.get(position).image;
         if (userImageUri != null) {
-//            GetBitMap.getBitmapUrl(userImageUri, viewHolder.avatar_view);
             viewHolder.avatar_view.setImageBitmap(getUserImage(userImageUri));
-        } else
-            // Set the Default avatar image.
+        } else // Set the Default avatar image.
             viewHolder.avatar_view.setImageResource(R.drawable.default_avatar_icon);
 
         viewHolder.goto_message_btn.setOnClickListener(view -> listener.handleClick(view, list.get(position).name));
-//        viewHolder.view.setOnClickListener(view -> listener.handleClick(list.get(position).name));
     }
 
     @Override

@@ -49,26 +49,26 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         User currentUser = listUser.get(position);
         holder.setData(currentUser);
         String testId = "user003";
-        getRelationshipStatus(testId,currentUser.id)
+        getRelationshipStatus(testId, currentUser.id)
                 .thenAccept(status -> {
-                    if (status.equals("Init")){
+                    if (status.equals("Init")) {
                         holder.binding.btnStatus.setHint("Kết bạn");
-                        holder.binding.btnStatus.setOnClickListener(v->{
+                        holder.binding.btnStatus.setOnClickListener(v -> {
                             holder.binding.btnStatus.setHint("Đã gửi");
                             holder.binding.btnStatus.setEnabled(true);
                             holder.binding.btnStatus.setAlpha(0.5f);
-                        updateRelationshipStatus(testId, currentUser.id,0);
+                            updateRelationshipStatus(testId, currentUser.id, 0);
                         });
                     } else if (status.equals("request")) {
                         holder.binding.btnStatus.setHint("Đã gửi");
-                        holder.binding.btnStatus.setOnClickListener(v->{
+                        holder.binding.btnStatus.setOnClickListener(v -> {
                             holder.binding.btnStatus.setHint("Kết bạn");
                             holder.binding.btnStatus.setEnabled(true);
                             holder.binding.btnStatus.setAlpha(0.5f);
                             updateRelationshipStatus(testId, currentUser.id, 1);
                         });
 
-                    } else if (status.equals("friend")){
+                    } else if (status.equals("friend")) {
                         holder.binding.btnStatus.setVisibility(View.VISIBLE);
                     }
                 });
@@ -80,21 +80,23 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return listUser.size();
     }
 
-    class UserViewHolder extends RecyclerView.ViewHolder{
+    class UserViewHolder extends RecyclerView.ViewHolder {
         private ItemContainerForSearchBinding binding;
-        UserViewHolder(ItemContainerForSearchBinding itemContainerForSearchBinding){
+
+        UserViewHolder(ItemContainerForSearchBinding itemContainerForSearchBinding) {
             super(itemContainerForSearchBinding.getRoot());
             binding = itemContainerForSearchBinding;
         }
-        void setData(User user){
+
+        void setData(User user) {
             binding.singleName.setText(user.name);
             binding.imageItem.setImageBitmap(getUserImage(user.image));
         }
     }
 
-    private Bitmap getUserImage(String encodedImage){
-        byte[] bytes = Base64.decode(encodedImage,Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+    private Bitmap getUserImage(String encodedImage) {
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     private CompletableFuture<String> getRelationshipStatus(String userId1, String userId2) {
@@ -111,7 +113,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                         if (!queryDocumentSnapshots.isEmpty()) {
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                             String status = documentSnapshot.getString(Constants.KEY_RELATION_STATUS);
-                            Log.d("TestStatus", "getRelationshipStatus: "+status);
+                            Log.d("TestStatus", "getRelationshipStatus: " + status);
                             future.complete(status);
                         } else {
                             future.complete("No Relationship"); // or any default status
@@ -124,7 +126,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return future;
     }
 
-    private void updateRelationshipStatus(String userId1, String userId2 , int type) {
+    private void updateRelationshipStatus(String userId1, String userId2, int type) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_RELATION_COLLECTION)
                 .whereEqualTo(Constants.KEY_RELATION_SENDER_ID, userId1)
@@ -136,7 +138,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                         if (!queryDocumentSnapshots.isEmpty()) {
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                             String documentId = documentSnapshot.getId();
-                            if (type ==0){
+                            if (type == 0) {
                                 database.collection(Constants.KEY_RELATION_COLLECTION)
                                         .document(documentId)
                                         .update(Constants.KEY_RELATION_STATUS, "request");
