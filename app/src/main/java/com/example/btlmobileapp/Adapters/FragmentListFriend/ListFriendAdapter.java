@@ -1,6 +1,9 @@
 package com.example.btlmobileapp.Adapters.FragmentListFriend;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +52,11 @@ public class ListFriendAdapter
         return new ListFriendViewHolder(photoView);
     }
 
+    private Bitmap getUserImage(String encodedImage) {
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
     @Override
     public void
     onBindViewHolder(@NonNull final ListFriendViewHolder viewHolder,
@@ -65,9 +73,8 @@ public class ListFriendAdapter
 
         String userImageUri = list.get(position).image;
         if (userImageUri != null) {
-            // new ImageLoadTask(userImageUri, viewHolder.avatar_view).execute();
-            //viewHolder.avatar_view.setImageURI(Uri.parse(userImageUri));
-            GetBitMap.getBitmapUrl(userImageUri, viewHolder.avatar_view);
+//            GetBitMap.getBitmapUrl(userImageUri, viewHolder.avatar_view);
+            viewHolder.avatar_view.setImageBitmap(getUserImage(userImageUri));
         } else
             // Set the Default avatar image.
             viewHolder.avatar_view.setImageResource(R.drawable.default_avatar_icon);
