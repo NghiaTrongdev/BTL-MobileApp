@@ -4,6 +4,7 @@ public class Constants {
     public static final String KEY_COLLECTION_USERS = "users";
     public static final String KEY_USER_ID = "userId";
     public static final String KEY_USER_NAME = "userName";
+    public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_PHONE = "phoneNumber";
@@ -33,6 +34,7 @@ public class Constants {
     public static final String KEY_OWNER_ID = "ownerId";
 
     // MESSAGE
+
     public static final String KEY_COLLECTION_MESSAGE = "message";
     public static final String KEY_MESSAGE_CONTENT = "content";
     public static final String KEY_MESSAGE_SENDER_ID = "messageSenderId";
@@ -41,7 +43,8 @@ public class Constants {
 
 
     // RELATIONSHIP
-    public static final String KEY_RELATION_COLLECTION = "relation";
+    public static final String KEY_RELATION_ID = "relationId";
+    public static final String KEY_RELATION_COLLECTION = "relations";
     public static final String KEY_RELATION_SENDER_ID = "senderId";
     public static final String KEY_RELATION_RECEIVED = "receivedId";
     public static final String KEY_RELATION_STATUS = "status";

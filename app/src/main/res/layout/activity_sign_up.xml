@@ -92,7 +92,7 @@
                     android:drawableStart="@drawable/person_icon"
                     android:drawablePadding="8dp"
                     android:padding="10dp"
-                    android:hint="UserName"
+                    android:hint="Name"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/black"

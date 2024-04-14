@@ -6,6 +6,7 @@
     android:paddingVertical="8sp"
     android:paddingStart="8sp"
     android:paddingEnd="30sp"
+    android:layout_marginTop="8dp"
     android:background="@android:color/transparent"
 
     >

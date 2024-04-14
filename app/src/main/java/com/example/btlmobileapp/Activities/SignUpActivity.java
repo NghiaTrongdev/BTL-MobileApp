@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.Utilities.PreferenceManager;
@@ -25,14 +26,17 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import kotlin.UShort;
@@ -94,6 +98,31 @@ public class SignUpActivity extends AppCompatActivity {
 
         return true;
     }
+
+
+    private CompletableFuture<String> autoCreateIdAsync() {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+
+        CompletableFuture<String> future = new CompletableFuture<>();
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot queryDocumentSnapshots = task.getResult();
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            future.complete("user001");
+                        } else {
+                            int size = queryDocumentSnapshots.size();
+                            future.complete(String.format("user%03d", size + 1));
+                        }
+                    } else {
+                        // Xử lý lỗi nếu có
+                        future.completeExceptionally(task.getException());
+                    }
+        });
+        return future;
+    }
+
     private void signUp(){
 
         isLoading(true);
@@ -105,7 +134,7 @@ public class SignUpActivity extends AppCompatActivity {
             // tạo đối tượng user để lưu trữ
             HashMap<String, Object> user = new HashMap<>();
             user.put(Constants.KEY_USER_ID,userId);
-            user.put(Constants.KEY_USER_NAME,binding.inputName.getText().toString().trim());
+            user.put(Constants.KEY_NAME,binding.inputName.getText().toString().trim());
             user.put(Constants.KEY_EMAIL,binding.inputEmail.getText().toString().trim());
             user.put(Constants.KEY_PHONE,binding.inputPhone.getText().toString().trim());
             user.put(Constants.KEY_PASSWORD,binding.inputPassword.getText().toString().trim());
@@ -151,6 +180,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
+
     private void showToast(String message){
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
     }
@@ -210,31 +240,8 @@ public class SignUpActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.avata_default);
         imageEncodedDefault = encodeImage(bitmap);
     }
-    private int getSize(){
 
-        return  0;
-    }
-    private CompletableFuture<String> autoCreateIdAsync() {
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        CompletableFuture<String> future = new CompletableFuture<>();
 
-        database.collection(Constants.KEY_COLLECTION_USERS).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                QuerySnapshot queryDocumentSnapshots = task.getResult();
-                if (queryDocumentSnapshots.isEmpty()) {
-                    future.complete("user001");
-                } else {
-                    int size = queryDocumentSnapshots.size();
-                    future.complete(String.format("user%03d", size + 1));
-                }
-            } else {
-                // Xử lý lỗi nếu có
-                future.completeExceptionally(task.getException());
-            }
-        });
-
-        return future;
-    }
     private void isLoading(boolean loading) {
         if (loading) {
             binding.buttonSignUp.setVisibility(View.INVISIBLE);
