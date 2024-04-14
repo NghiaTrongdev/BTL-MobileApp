@@ -13,4 +13,5 @@
     <string name="listfiend">ListFiend</string>
     <string name="useravatar">UserAvatar</string>
     <string name="phonenumber">Phonenumber</string>
+    <string name="multiautocompletetextview">MultiAutoCompleteTextView</string>
 </resources>

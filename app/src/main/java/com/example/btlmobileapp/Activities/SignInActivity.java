@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -34,14 +35,17 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
 
+        binding.btnChangeTypePassWord.setBackgroundResource(R.drawable.visibility_fill0_wght400_grad0_opsz24);
+
         listener();
         setInputAfterRemember();
     }
-    private void setInputAfterRemember(){
+
+    private void setInputAfterRemember() {
         try (FileReader reader = new FileReader("login.json")) {
             // Sử dụng Gson để phân tích chuỗi JSON thành đối tượng Login
             Gson gson = new Gson();
-            LoginInfor login = gson.fromJson(reader, LoginInfor.class );
+            LoginInfor login = gson.fromJson(reader, LoginInfor.class);
 
             // Sử dụng thông tin đăng nhập
             String username = login.getUsername();
@@ -53,25 +57,27 @@ public class SignInActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void listener(){
-        binding.imageBack.setOnClickListener(v->onBackPressed());
-        binding.buttonLogin.setOnClickListener(v->{
-            if (isValid()){
+
+    private void listener() {
+        binding.imageBack.setOnClickListener(v -> onBackPressed());
+        binding.buttonLogin.setOnClickListener(v -> {
+            if (isValid()) {
                 Login();
             }
         });
-        binding.textChangeType.setOnClickListener(v->{
-            if(binding.textChangeType.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD){
-                binding.textChangeType.setText("Ẩn");
-                binding.textChangeType.setInputType(InputType.TYPE_CLASS_TEXT);
+        binding.btnChangeTypePassWord.setOnClickListener(v -> {
+            if (binding.inputPassword.getTransformationMethod() != null) {
+                binding.inputPassword.setTransformationMethod(null);
+                binding.btnChangeTypePassWord.setBackgroundResource(R.drawable.visibility_off_fill0_wght400_grad0_opsz24);
             } else {
-                binding.textChangeType.setText("Hiện");
-                binding.textChangeType.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                binding.inputPassword.setTransformationMethod(new PasswordTransformationMethod());
+                binding.btnChangeTypePassWord.setBackgroundResource(R.drawable.visibility_fill0_wght400_grad0_opsz24);
             }
         });
 
     }
-    private void Login(){
+
+    private void Login() {
 //        isLoading(true);
 //        String username = binding.inputUser.getText().toString().trim();
 //        String password = binding.inputPassword.getText().toString().trim();
@@ -107,22 +113,24 @@ public class SignInActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-    private void rememberLogin(){
+
+    private void rememberLogin() {
         String username = binding.inputUser.toString();
         String password = binding.inputPassword.toString();
 
-        LoginInfor loginInfor = new LoginInfor(username,password);
+        LoginInfor loginInfor = new LoginInfor(username, password);
         Gson gson = new Gson();
         String json = gson.toJson(loginInfor);
 
-        try(FileWriter fileWriter= new FileWriter("login.json")) {
+        try (FileWriter fileWriter = new FileWriter("login.json")) {
             fileWriter.write(json);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private void isLoading(boolean loading){
-        if(loading){
+
+    private void isLoading(boolean loading) {
+        if (loading) {
             binding.buttonLogin.setVisibility(View.INVISIBLE);
             binding.progressbar.setVisibility(View.VISIBLE);
         } else {
@@ -130,10 +138,12 @@ public class SignInActivity extends AppCompatActivity {
             binding.progressbar.setVisibility(View.INVISIBLE);
         }
     }
-    private void showToast(String message){
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
-    private boolean isValid(){
+
+    private boolean isValid() {
         return true;
     }
 }

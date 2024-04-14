@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -65,6 +66,26 @@ public class SignUpActivity extends AppCompatActivity {
             // cờ xin cấp quyền đọc dữ liệu URI từ intent
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             pickImage.launch(intent);
+        });
+
+        binding.textChangeType.setOnClickListener(v -> {
+            if (binding.inputPassword.getTransformationMethod() != null) {
+                binding.inputPassword.setTransformationMethod(null);
+                binding.textChangeType.setText("Ẩn");
+            } else {
+                binding.inputPassword.setTransformationMethod(new PasswordTransformationMethod());
+                binding.textChangeType.setText("Hiện");
+            }
+        });
+
+        binding.textChangeType2.setOnClickListener(v -> {
+            if (binding.inputConfirmPassword.getTransformationMethod() != null) {
+                binding.inputConfirmPassword.setTransformationMethod(null);
+                binding.textChangeType2.setText("Ẩn");
+            } else {
+                binding.inputConfirmPassword.setTransformationMethod(new PasswordTransformationMethod());
+                binding.textChangeType2.setText("Hiện");
+            }
         });
     }
     private boolean isValid(){

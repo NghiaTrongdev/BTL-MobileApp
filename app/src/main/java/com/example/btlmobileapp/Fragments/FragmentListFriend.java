@@ -48,110 +48,6 @@ public class FragmentListFriend extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.img1);
-        Uri uri = AddImage(bm);
-
-//        if (uri == null) {
-//            System.out.println("can not insert the image");
-//        } else
-//        // Load thumbnail of a specific media item.
-//        {
-//            try {
-//                Bitmap thumbnail =
-//                        requireContext().getContentResolver().loadThumbnail(
-//                                uri, new Size(640, 480), null);
-//                System.out.println(thumbnail.getWidth() + " " + thumbnail.getHeight());
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-    }
-
-    public Uri AddImage(Bitmap bitmap) {
-        ImageQueryHelper imageQueryHelper = new ImageQueryHelper();
-        try {
-            Uri uri = imageQueryHelper.saveBitmap(requireContext(),
-                    bitmap,
-                    Bitmap.CompressFormat.JPEG,
-                    "JPG", "harryguci.jpg");
-
-            System.out.printf("Saved %s%n", uri);
-            return uri;
-
-        } catch (IOException e) {
-//            throw new RuntimeException(e);
-            return null;
-        }
-    }
-
-    public boolean AddImage(String url) {
-        ImageQueryHelper imageQueryHelper = new ImageQueryHelper();
-        try {
-            Bitmap bitmap = GetBitMap.get(url, requireContext());
-            Uri uri = imageQueryHelper.saveBitmap(requireContext(),
-                    bitmap,
-                    Bitmap.CompressFormat.JPEG,
-                    "JPG", "harryguci.jpg");
-
-            System.out.printf("Saved %s%n", uri.toString());
-        } catch (IOException e) {
-//            throw new RuntimeException(e);
-            return false;
-        }
-        return true;
-    }
-
-    public List<MediaStoreImage> GetMediaStorage() {
-        Context application = requireContext();
-        List<MediaStoreImage> images = ImageQueryHelper.queryImages(application);
-
-        String[] projection = {
-                MediaStore.Images.Media._ID,
-                MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.DATE_ADDED
-        };
-        String selection = MediaStore.Images.Media.DATE_ADDED + " >= ?";
-        String[] selectionArgs = {
-                String.valueOf(ImageQueryHelper.dateToTimestamp(22, 10, 2008))
-        };
-        String sortOrder = MediaStore.Images.Media.DATE_ADDED + " DESC";
-
-        Cursor cursor = application.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                selection,
-                selectionArgs,
-                sortOrder
-        );
-
-        // Return a empty array
-        if (cursor == null)
-            return new ArrayList<>();
-
-        int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
-        int dateModifiedColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
-        int displayNameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
-
-        while (cursor.moveToNext()) {
-            // Use an ID column from the projection to get
-            // a URI representing the media item itself.
-            long id = cursor.getLong(idColumn);
-            Date dateAdded = new Date(TimeUnit.SECONDS.toMillis(cursor.getLong(dateModifiedColumn)));
-            String displayName = cursor.getString(displayNameColumn);
-
-            Uri contentUri = ContentUris.withAppendedId(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    id
-            );
-
-            MediaStoreImage image = new MediaStoreImage(id, displayName, dateAdded, contentUri);
-            images.add(image);
-
-            System.out.printf("Added Image: id=%s name=%s date=%s url=%s%n", id, displayName, dateAdded, contentUri);
-        }
-        cursor.close();
-        return images;
     }
 
     @Override
@@ -171,6 +67,7 @@ public class FragmentListFriend extends Fragment {
         friendRecyclerView
                 = (RecyclerView) currentView.findViewById(
                 R.id.friend_recycler_view);
+        userList = getData();
 
         adapter = new ListFriendAdapter(
                 userList, FragmentListFriend.this.getContext(), listener);
@@ -186,8 +83,6 @@ public class FragmentListFriend extends Fragment {
         List<User> list = new ArrayList<>();
 
         // Data testing
-
-        // "https://th.bing.com/th/id/OIP.hjQkrBp4SJ5aq_ulIZCl1AHaHc?rs=1&pid=ImgDetMain"
         list.add(new User("1", "user1", "0123"));
         list.add(new User("2", "User2", "0456"));
         list.add(new User("3", "User3", "0666"));

@@ -94,19 +94,22 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     />
-                <TextView
-                    android:id="@+id/textChangeType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hiện"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/purple"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+
+                <Button
+                    android:id="@+id/btnChangeTypePassWord"
+                    android:layout_width="40dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="5dp"
+                    android:backgroundTint="#6D77FA"
+                    android:drawableLeft="@drawable/visibility_fill0_wght400_grad0_opsz24"
+                    android:drawableTint="#FFFFFF"
+                    android:padding="0dp"
+                    android:paddingStart="5dp"
+                    android:textSize="18dp"
+                    app:iconSize="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/inputPassword"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
