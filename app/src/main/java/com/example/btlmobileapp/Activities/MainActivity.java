@@ -30,6 +30,7 @@ import com.example.btlmobileapp.Fragments.FragmentSearch;
 import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
+import com.example.btlmobileapp.Utilities.PreferenceManager;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String prevId = "";
     private String prevQuery = "";
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         binding.textButton.setAlpha(0.5f);
         binding.textButton.setEnabled(false);
         binding.progess.setVisibility(View.INVISIBLE);
+        preferenceManager = new PreferenceManager(getApplicationContext());
         getAllUser();
     }
 
@@ -180,11 +183,13 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(task ->{
                     if (task.isSuccessful() && task.getResult() != null){
                         List<User> users = new ArrayList<>();
+                        String consId = preferenceManager.getString(Constants.KEY_USER_ID);
                         for (QueryDocumentSnapshot x : task.getResult()){
                             User user = new User();
                             user.id = x.getString(Constants.KEY_USER_ID);
 
-                            if (!prevId.equals(user.id)){
+
+                            if (!prevId.equals(user.id) && !prevId.equals(consId)){
                                 user.bio = x.getString(Constants.KEY_BIO);
                                 user.name = x.getString(Constants.KEY_NAME);
                                 user.image = x.getString(Constants.KEY_IMAGE);
@@ -202,10 +207,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(users.size() >0){
                             isLoading(false);
+                            binding.textNotification.setVisibility(View.INVISIBLE);
                             FragmentSearch fragmentSearch = new FragmentSearch();
                             fragmentSearch.onDataReceived(users);
                             replaceFragment(fragmentSearch);
-
+                        } else {
+                            isLoading(false);
+                            binding.textNotification.setVisibility(View.VISIBLE);
+                            binding.layoutMain.setVisibility(View.GONE);
                         }
 
                     } else {
