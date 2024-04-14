@@ -1,5 +1,7 @@
 package com.example.btlmobileapp.Models;
 
+import com.google.gson.Gson;
+
 public class LoginInfor
 {
     private String username;
@@ -25,4 +27,9 @@ public class LoginInfor
         this.username = username;
         this.password = password;
     }
+
+    public static LoginInfor CreateFromJson(String json) {
+        return new Gson().fromJson(json, LoginInfor.class);
+    }
+
 }

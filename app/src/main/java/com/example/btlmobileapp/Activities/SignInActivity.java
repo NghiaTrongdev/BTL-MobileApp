@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -19,10 +20,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.FileReader;
 
 public class SignInActivity extends AppCompatActivity {
     private ActivitySignInBinding binding;
@@ -42,20 +51,43 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void setInputAfterRemember() {
-        try (FileReader reader = new FileReader("login.json")) {
-            // Sử dụng Gson để phân tích chuỗi JSON thành đối tượng Login
-            Gson gson = new Gson();
-            LoginInfor login = gson.fromJson(reader, LoginInfor.class);
 
-            // Sử dụng thông tin đăng nhập
-            String username = login.getUsername();
-            String password = login.getPassword();
-            // Tiến hành đăng nhập bằng thông tin này
-            binding.inputUser.setText(username);
-            binding.inputPassword.setText(password);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Reading the file back (optional)
+//        FileInputStream fIn = null;
+//        try {
+//            fIn = openFileInput("login.json");
+//            InputStreamReader isr = new InputStreamReader(fIn);
+//            char[] inputBuffer = new char[500];
+//            isr.read(inputBuffer);
+//            String readString = new String(inputBuffer);
+//            LoginInfor loginInfor = LoginInfor.CreateFromJson(readString);
+//            binding.inputUser.setText(loginInfor.getUsername());
+//            binding.inputPassword.setText(loginInfor.getPassword());
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+
+//        try (FileReader reader = new FileReader("login.json")) {
+//
+//
+//            // Sử dụng Gson để phân tích chuỗi JSON thành đối tượng Login
+//            Gson gson = new Gson();
+//            LoginInfor login = gson.fromJson(reader, LoginInfor.class);
+//
+//            // Sử dụng thông tin đăng nhập
+//            String username = login.getUsername();
+//            String password = login.getPassword();
+//            // Tiến hành đăng nhập bằng thông tin này
+//            binding.inputUser.setText(username);
+//            binding.inputPassword.setText(password);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void listener() {
@@ -109,23 +141,45 @@ public class SignInActivity extends AppCompatActivity {
 //                    }
 //                });
 
+        if (binding.buttonRemember.isChecked())
+            rememberLogin();
+
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
     private void rememberLogin() {
-        String username = binding.inputUser.toString();
-        String password = binding.inputPassword.toString();
+        String username = binding.inputUser.getText().toString();
+        String password = binding.inputPassword.getText().toString();
 
         LoginInfor loginInfor = new LoginInfor(username, password);
         Gson gson = new Gson();
         String json = gson.toJson(loginInfor);
 
-        try (FileWriter fileWriter = new FileWriter("login.json")) {
-            fileWriter.write(json);
-        } catch (IOException e) {
-            e.printStackTrace();
+//        try (FileWriter fileWriter = new FileWriter("login.json")) {
+//            fileWriter.write(json);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            FileOutputStream fOut = openFileOutput("login.json", MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+            osw.write(json); // Write the string to the file
+            osw.flush(); // Ensure everything is written out
+            osw.close();
+
+            // Reading the file back (optional)
+//            FileInputStream fIn = openFileInput("samplefile.txt");
+//            InputStreamReader isr = new InputStreamReader(fIn);
+//            char[] inputBuffer = new char[TESTSTRING.length()];
+//            isr.read(inputBuffer);
+//            String readString = new String(inputBuffer);
+//            boolean isTheSame = TESTSTRING.equals(readString);
+//            Log.i("File Reading stuff", "Success = " + isTheSame);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 
