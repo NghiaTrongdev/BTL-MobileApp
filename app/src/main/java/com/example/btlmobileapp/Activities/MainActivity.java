@@ -30,6 +30,7 @@ import com.example.btlmobileapp.Fragments.FragmentSearch;
 import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
+import com.example.btlmobileapp.Utilities.PreferenceManager;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private String prevId = "";
     private String prevQuery = "";
 
+    private PreferenceManager preferenceManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
         binding.textButton.setAlpha(0.5f);
         binding.textButton.setEnabled(false);
         binding.progess.setVisibility(View.INVISIBLE);
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
+
         getAllUser();
     }
 
@@ -93,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
 
-            replaceFragment(new FragmentListFriend());
+            replaceFragment(new FragmentListFriend(preferenceManager));
         });
 
         binding.textSearch.setOnClickListener(v -> {

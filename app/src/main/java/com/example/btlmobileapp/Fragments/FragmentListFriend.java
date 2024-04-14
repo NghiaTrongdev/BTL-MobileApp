@@ -34,13 +34,8 @@ public class FragmentListFriend extends Fragment {
     ListFriendAdapter adapter;
     ListFriendItemClickListener listener = new ListFriendItemClickListener();
 
-    public FragmentListFriend() {
-        try {
-            preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
-        } catch (NullPointerException ex) {
-            preferenceManager = null;
-            ex.printStackTrace();
-        }
+    public FragmentListFriend(PreferenceManager preferenceManager) {
+        this.preferenceManager = preferenceManager;
     }
 
     @Override
