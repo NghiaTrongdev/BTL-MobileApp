@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.Utilities.PreferenceManager;
@@ -24,14 +25,17 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import kotlin.UShort;
@@ -74,45 +78,30 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-    private CompletableFuture<String> autoCreateRelationshipIdAsync(){
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        CompletableFuture<String> future = new CompletableFuture<>();
-        database.collection(Constants.KEY_RELATION_COLLECTION)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        QuerySnapshot queryDocumentSnapshots = task.getResult();
-                        if (queryDocumentSnapshots.isEmpty()){
-                            future.complete("relation001");
-                        } else {
-                            int size = queryDocumentSnapshots.size();
-                            future.complete(String.format("relation%03d",size +1));
-                        }
-                    } else {
-                        future.completeExceptionally(task.getException());
-                    }
-                });
-        return future;
-    }
+
     private CompletableFuture<String> autoCreateIdAsync() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
+
         CompletableFuture<String> future = new CompletableFuture<>();
-        database.collection(Constants.KEY_COLLECTION_USERS).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                QuerySnapshot queryDocumentSnapshots = task.getResult();
-                if (queryDocumentSnapshots.isEmpty()) {
-                    future.complete("user001");
-                } else {
-                    int size = queryDocumentSnapshots.size();
-                    future.complete(String.format("user%03d", size + 1));
-                }
-            } else {
-                // Xử lý lỗi nếu có
-                future.completeExceptionally(task.getException());
-            }
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot queryDocumentSnapshots = task.getResult();
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            future.complete("user001");
+                        } else {
+                            int size = queryDocumentSnapshots.size();
+                            future.complete(String.format("user%03d", size + 1));
+                        }
+                    } else {
+                        // Xử lý lỗi nếu có
+                        future.completeExceptionally(task.getException());
+                    }
         });
         return future;
     }
+
     private void signUp(){
 
         isLoading(true);
@@ -170,6 +159,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
+
     private void showToast(String message){
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
     }
