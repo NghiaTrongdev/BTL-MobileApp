@@ -77,7 +77,7 @@ public class FragmentSearch extends Fragment implements OnReceivedDataListener {
     @Override
     public void onStart() {
         super.onStart();
-        adapter = new SearchResultAdapter(listUser);
+        adapter = new SearchResultAdapter(listUser,getContext());
         binding.main.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
