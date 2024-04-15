@@ -24,6 +24,8 @@ public class Constants {
     public static final String KEY_LAST_LOGIN = "lastLogin";
     public static final String KEY_ROLE = "role";
 
+    public static final String KEY_USER = "user";
+
     // KEY FOR ZOOM
     public static final String KEY_COLLECTION_ZOOM = "zoom";
     public static final String KEY_ZOOM_ID = "zoomId";

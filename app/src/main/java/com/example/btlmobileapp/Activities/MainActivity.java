@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -31,6 +32,7 @@ import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -66,24 +68,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListener() {
         binding.imageHome.setOnClickListener(v -> {
-            binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
-            binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-            binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-
-             replaceFragment(new FragmentHome());
+            binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.icon_selected_tint));
+            binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+            binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+            replaceFragment(new FragmentHome());
         });
 
         binding.imageAccount.setOnClickListener(v -> {
-            binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-            binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
-            binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
+            binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+            binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.icon_selected_tint));
+            binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.gray));
             replaceFragment(new FragmentProfile());
         });
 
         binding.imageListFriend.setOnClickListener(v -> {
-            binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-            binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
-            binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
+            binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+            binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+            binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.icon_selected_tint));
 
             replaceFragment(new FragmentListFriend());
         });
@@ -126,7 +127,9 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(new FragmentHome());
         });
 
-
+        //chat
+        binding.fabNewChat.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), UserActivity.class)));
 
         binding.textButton.setOnClickListener(v->{
             actionSearch();
@@ -212,6 +215,18 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(fragmentSearch);
         fragmentSearch.onDataReceived(list);
     }
+
+
+    //update tokens
+//    private void updateToken(String token) {
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        DocumentReference documentReference =
+//                database.collection (Constants.KEY_COLLECTION_USERS).document (
+//                        preferenceManager.getString(Constants.KEY_USER_ID)
+//                );
+//        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+//                .addOnFailureListener(e -> showToast("Unable to update token"));
+//    }
 
     @Override
     protected void onDestroy() {
