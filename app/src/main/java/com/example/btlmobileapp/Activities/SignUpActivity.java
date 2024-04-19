@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
 import android.util.Log;
@@ -91,14 +93,187 @@ public class SignUpActivity extends AppCompatActivity {
                 binding.textChangeType2.setText("Hiện");
             }
         });
+
+        binding.inputName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                binding.txtName.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtName.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String name = binding.inputName.getText().toString().trim();
+                if (name.isEmpty())
+                {
+                    binding.txtName.setText("Trường này còn trống");
+                } else if (!checkName(name)){
+                    binding.txtName.setText("Tên không hợp lệ");
+                } else
+                binding.txtName.setText("");
+            }
+        });
+
+        binding.inputPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                binding.txtPhone.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtPhone.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String phone = binding.inputPhone.getText().toString().trim();
+                if(phone.isEmpty()){
+                    binding.txtPhone.setText("Trường này còn trống");
+                } else if (!checkPhone(phone)) {
+                    binding.txtPhone.setText("Số điện thoại không hợp lệ");
+                } else
+                binding.txtPhone.setText("");
+            }
+        });
+        binding.inputEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                binding.txtEmail.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtEmail.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String email = binding.inputEmail.getText().toString().trim();
+                if (email.isEmpty()){
+                    binding.txtEmail.setText("Trường này còn trống");
+                } else if (!isValidEmailAddress(email)) {
+                    binding.txtEmail.setText("Email không hợp lệ");
+                } else
+                binding.txtEmail.setText("");
+            }
+        });
+        binding.inputPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                binding.txtEmail.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtEmail.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password = binding.inputPassword.getText().toString().trim();
+                if(password.isEmpty()){
+                    binding.txtPassword.setText("Trường này còn trống");
+                } else if (!isValidPassword(password))
+                {
+                    binding.txtPassword.setText("Mật khẩu không hợp lệ , từ 6 kí tự trở lên");
+                }else
+                binding.txtPassword.setText("");
+            }
+        });
+        binding.inputConfirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                binding.txtConfirm.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtConfirm.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password = binding.inputPassword.getText().toString().trim();
+                String confirmPassword = binding.inputConfirmPassword.getText().toString().trim();
+                if(confirmPassword.isEmpty())
+                {
+                    binding.txtConfirm.setText("Trường này còn trống");
+                } else if (!isValidConfirmPassword(password,confirmPassword)) {
+                    binding.txtConfirm.setText("Mật khẩu không trùng khớp");
+                } else
+                binding.txtConfirm.setText("");
+            }
+        });
     }
     private boolean isValid(){
+        String name = binding.inputName.getText().toString().trim();
+        String phone = binding.inputPhone.getText().toString().trim();
+        String email = binding.inputEmail.getText().toString().trim();
+        String password = binding.inputPassword.getText().toString().trim();
+        String confirmPassword = binding.inputConfirmPassword.getText().toString().trim();
+
+        if(checkName(name) && checkPhone(phone) && isValidEmailAddress(email) && isValidPassword(password) && isValidConfirmPassword(password,confirmPassword))
+        {
+            return true;
+        }
 
 
+        return false;
+    }
+    private boolean checkName(String name){
+        if (name == null || name.isEmpty()) {
+            return false;
+        }
+
+        // Biểu thức chính quy để kiểm tra tên
+        String regex = "^[a-zA-Z\\s]+$";
+
+        // Kiểm tra tên theo regex
+        if (!name.matches(regex)) {
+            return false;
+        }
 
         return true;
     }
+    private boolean checkPhone(String phone) {
+        if(phone.isEmpty())
+        {
+            return false;
+        } else if (!phone.matches("(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\\b")) {
+            return false;
+        }
 
+        return true;
+    }
+    private boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+    private boolean isValidPassword(String password){
+        // Kiểm tra nếu password rỗng hoặc null
+        if (password == null || password.isEmpty()) {
+            return false;
+        }
+
+        // Biểu thức chính quy để kiểm tra mật khẩu
+        String regex = "^[a-zA-Z0-9]{6,}$";
+
+        // Kiểm tra mật khẩu theo regex và độ dài
+        return password.matches(regex);
+    }
+    private boolean isValidConfirmPassword(String password, String confirmPassword){
+        if(password.equals(confirmPassword)){
+            return true;
+        }
+        return false;
+    }
 
     private CompletableFuture<String> autoCreateIdAsync() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();

@@ -1,5 +1,6 @@
 package com.example.btlmobileapp.Adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.btlmobileapp.Activities.MainActivity;
 import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.Utilities.Constants;
+import com.example.btlmobileapp.Utilities.PreferenceManager;
 import com.example.btlmobileapp.databinding.ItemContainerForSearchBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,9 +28,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.UserViewHolder> {
     private final List<User> listUser;
+    PreferenceManager preferenceManager;
 
-    public SearchResultAdapter(List<User> listUser) {
+    public SearchResultAdapter(List<User> listUser, Context context) {
         this.listUser = listUser;
+        preferenceManager = new PreferenceManager(context);
     }
 
     @NonNull

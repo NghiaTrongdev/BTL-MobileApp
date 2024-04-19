@@ -16,8 +16,7 @@ import com.example.btlmobileapp.R;
 
 import java.util.List;
 
-public class ListFriendAdapter
-        extends RecyclerView.Adapter<ListFriendViewHolder> {
+public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendViewHolder> {
 
     List<User> list;
     Context context;
@@ -88,6 +87,7 @@ public class ListFriendAdapter
             @NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
+
 
 
 }

@@ -100,8 +100,5 @@ public class FragmentSearch extends Fragment implements OnReceivedDataListener {
     public void onDataReceived(List<User> list) {
         listUser = new ArrayList<>();
         listUser = list;
-
-
-
     }
 }

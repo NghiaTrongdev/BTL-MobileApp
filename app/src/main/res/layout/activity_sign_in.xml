@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/loginbkg"
+
     android:clipToPadding="true"
     android:orientation="vertical"
     android:overScrollMode="never"
@@ -59,22 +59,22 @@
             android:padding="20dp">
 
             <EditText
-                android:id="@+id/inputUser"
+                android:id="@+id/inputPhone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/custom_input"
                 android:drawableStart="@drawable/person_icon"
                 android:drawablePadding="8dp"
-                android:hint="Phone number or Email"
-                android:inputType="text"
+                android:hint="Phone number"
+                android:inputType="number"
                 android:maxLines="1"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background" />
 
             <TextView
-                android:id="@+id/txtPhoneOrEmail"
+                android:id="@+id/txtPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

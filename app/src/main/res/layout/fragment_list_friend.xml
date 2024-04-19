@@ -54,15 +54,30 @@
                 app:layout_constraintStart_toEndOf="@+id/btnTypFriends"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/friend_recycler_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFFFFF"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never"
-            tools:listitem="@layout/list_friend_item" />
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+
+                android:padding="5dp"
+                android:id="@+id/layoutMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:visibility="invisible"
+
+                />
+        </FrameLayout>
+
 
     </LinearLayout>
 
