@@ -31,7 +31,7 @@ public class ChatActivity extends AppCompatActivity {
     public void init() {
 //        binding.buttonSearch.setVisibility(View.VISIBLE);
 //        binding.buttonSearch.setOnClickListener(v -> finish());
-        binding.btnBack.setVisibility(View.VISIBLE);
-        binding.btnBack.setOnClickListener(v -> finish());
+//        binding.btnBack.setVisibility(View.VISIBLE);
+//        binding.btnBack.setOnClickListener(v -> finish());
     }
 }
