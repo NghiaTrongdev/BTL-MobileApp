@@ -30,7 +30,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BTLMobileApp"
-        >
+        tools:targetApi="31">
+        <activity
+            android:name=".Fragments.FragmentInformation"
+            android:exported="false" />
+        <activity android:name=".Fragments.FragmentChangePassword" />
         <activity
             android:name=".Activities.ChatActivity"
             android:exported="false" />
@@ -51,11 +55,8 @@
         <activity
             android:name=".Activities.SignInActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity android:name=".Activities.MainActivity"
-                android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".Activities.MainActivity" />
 
         <service
             android:name=".Firebases.MessageService"

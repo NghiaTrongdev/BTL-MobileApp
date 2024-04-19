@@ -16,4 +16,5 @@
     <color name="background_message_container">#EEF0F1</color>
     <color name="border_receiv_message">#2B66F6</color>
     <color name="secondary_text">#757575</color>
+    <color name="red">#F10505</color>
 </resources>
