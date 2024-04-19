@@ -17,10 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.btlmobileapp.Adapters.FragmentListFriend.ListFriendItemClickListener;
-import com.example.btlmobileapp.Adapters.FragmentListFriend.ListFriendAdapter;
-import com.example.btlmobileapp.Adapters.SearchResultAdapter;
-import com.example.btlmobileapp.MediaStorage.MediaStoreImage;
+
+
 import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
@@ -40,14 +38,10 @@ public class FragmentListFriend extends Fragment {
     private List<User> listTemp;
     private List<User> userList;
     private List<User> requestUserList;
-    private LiveData<List<MediaStoreImage>> avatars;
-    private PreferenceManager preferenceManager;
-    private Button btnTypeFriends;
-    private Button btnTypeRequests;
 
-    ListFriendAdapter adapter;
-    SearchResultAdapter adapter2;
-    ListFriendItemClickListener listener = new ListFriendItemClickListener();
+    private PreferenceManager preferenceManager;
+
+
     private FragmentListFriendBinding binding;
 
     private String tab = "friend";
@@ -76,52 +70,6 @@ public class FragmentListFriend extends Fragment {
         View currentView = getView();
         if (currentView == null)
             return;
-
-        btnTypeFriends = (Button) currentView.findViewById(R.id.btnTypFriends);
-        btnTypeRequests = (Button) currentView.findViewById(R.id.btnTypeRequests);
-        friendRecyclerView
-                = (RecyclerView) currentView.findViewById(
-                R.id.friend_recycler_view);
-
-        btnTypeFriends.setOnClickListener(v -> {
-                    getListFriendData();
-//            userList = getData();
-
-//            adapter = new ListFriendAdapter(
-//                    listTemp, getContext(), listener);
-//
-//
-//
-//            btnTypeFriends.setTextColor(Color.BLUE);
-//            btnTypeRequests.setTextColor(Color.argb(255, 150, 150, 150));
-        });
-
-//        binding.btnTypeRequests.setOnClickListener(v->{
-//            showToast("Here");
-//            Log.d("TestOnClick","Here");
-//            getListFriendData();
-//
-//        });
-        btnTypeRequests.setOnClickListener(v -> {
-            userList = getRequests();
-            adapter2 = new SearchResultAdapter(userList,getContext());
-            friendRecyclerView.setAdapter(adapter2);
-
-            btnTypeRequests.setTextColor(Color.BLUE);
-            btnTypeFriends.setTextColor(Color.argb(255, 150, 150, 150));
-        });
-
-//        if (tab.equals("friends")) {
-//            userList = getData();
-//            adapter = new ListFriendAdapter(
-//                    userList, FragmentListFriend.this.getContext(), listener);
-//            friendRecyclerView.setAdapter(adapter);
-//        } else {
-//            userList = getRequests();
-//            adapter2 = new SearchResultAdapter(userList);
-//            friendRecyclerView.setAdapter(adapter2);
-//        }
-
 
     }
 
