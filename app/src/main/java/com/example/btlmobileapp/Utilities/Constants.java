@@ -1,6 +1,7 @@
 package com.example.btlmobileapp.Utilities;
 
 public class Constants {
+    public static final String LOGIN_SUCCESS = "lOGIN_SUCCESS";
     public static final String KEY_COLLECTION_USERS = "users";
     public static final String KEY_USER_ID = "userId";
     public static final String KEY_USER_NAME = "userName";

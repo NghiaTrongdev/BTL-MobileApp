@@ -3,6 +3,7 @@ package com.example.btlmobileapp.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.btlmobileapp.Models.LoginInfor;
+import com.example.btlmobileapp.Notifications.LoginSuccessNotification;
 import com.example.btlmobileapp.R;
 import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.Utilities.PreferenceManager;
@@ -34,10 +36,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.FileReader;
+import java.util.concurrent.CompletableFuture;
 
 public class SignInActivity extends AppCompatActivity {
     private ActivitySignInBinding binding;
     private PreferenceManager preferenceManager;
+    private LoginSuccessNotification loginSuccessNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,53 +53,29 @@ public class SignInActivity extends AppCompatActivity {
         binding.btnChangeTypePassWord.setBackgroundResource(R.drawable.visibility_fill0_wght400_grad0_opsz24);
 
         listener();
-        setInputAfterRemember();
+
+
     }
-
-    private void setInputAfterRemember() {
-
-        // Reading the file back (optional)
-//        FileInputStream fIn = null;
-//        try {
-//            fIn = openFileInput("login.json");
-//            InputStreamReader isr = new InputStreamReader(fIn);
-//            char[] inputBuffer = new char[500];
-//            isr.read(inputBuffer);
-//            String readString = new String(inputBuffer);
-//            LoginInfor loginInfor = LoginInfor.CreateFromJson(readString);
-//            binding.inputUser.setText(loginInfor.getUsername());
-//            binding.inputPassword.setText(loginInfor.getPassword());
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
-//        try (FileReader reader = new FileReader("login.json")) {
 //
-//
-//            // Sử dụng Gson để phân tích chuỗi JSON thành đối tượng Login
-//            Gson gson = new Gson();
-//            LoginInfor login = gson.fromJson(reader, LoginInfor.class);
-//
-//            // Sử dụng thông tin đăng nhập
-//            String username = login.getUsername();
-//            String password = login.getPassword();
-//            // Tiến hành đăng nhập bằng thông tin này
-//            binding.inputUser.setText(username);
-//            binding.inputPassword.setText(password);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        unregisterReceiver(loginSuccessNotification);
+//    }
 
     private void listener() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
         binding.buttonLogin.setOnClickListener(v -> {
-            Login();
+            String phone = binding.inputPhone.getText().toString().trim();
+            String password = binding.inputPassword.getText().toString().trim();
+            if(checkPhone(phone) && checkPassword(password))
+            {
+
+                Login();
+            } else {
+                showToast("Failed to login");
+            }
+
         });
         binding.btnChangeTypePassWord.setOnClickListener(v -> {
             if (binding.inputPassword.getTransformationMethod() != null) {
@@ -225,6 +205,7 @@ public class SignInActivity extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
+
 
     private boolean checkPhone(String phone) {
         if(phone.isEmpty())

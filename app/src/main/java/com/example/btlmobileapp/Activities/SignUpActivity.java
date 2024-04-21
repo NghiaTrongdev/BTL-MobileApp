@@ -63,7 +63,17 @@ public class SignUpActivity extends AppCompatActivity {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
         binding.buttonSignUp.setOnClickListener(v->{
             if (isValid()){
-                signUp();
+                String phone = binding.inputPhone.getText().toString().trim();
+
+                checkIsExistPhoneNumber(phone)
+                        .thenAccept(task ->{
+                            if (task){
+                                signUp();
+                            } else {
+                                binding.txtPhone.setText("Số điện thoại đã tồn tại");
+                            }
+                        });
+
             }
         });
         binding.imageAdd.setOnClickListener(v->{
@@ -155,7 +165,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 String email = binding.inputEmail.getText().toString().trim();
                 if (email.isEmpty()){
-                    binding.txtEmail.setText("Trường này còn trống");
+                    binding.txtEmail.setText("Nên nhâp Email để cấp lại mật khẩu");
                 } else if (!isValidEmailAddress(email)) {
                     binding.txtEmail.setText("Email không hợp lệ");
                 } else
@@ -210,6 +220,27 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
+    private CompletableFuture<Boolean> checkIsExistPhoneNumber(String phone) {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo(Constants.KEY_PHONE, phone)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().size() > 0) {
+                            future.complete(false);
+                        } else {
+                            future.complete(true);
+                        }
+                    } else {
+                        future.completeExceptionally(task.getException()); // Xử lý lỗi
+                    }
+                });
+
+        return future;
+    }
     private boolean isValid(){
         String name = binding.inputName.getText().toString().trim();
         String phone = binding.inputPhone.getText().toString().trim();
@@ -217,8 +248,9 @@ public class SignUpActivity extends AppCompatActivity {
         String password = binding.inputPassword.getText().toString().trim();
         String confirmPassword = binding.inputConfirmPassword.getText().toString().trim();
 
-        if(checkName(name) && checkPhone(phone) && isValidEmailAddress(email) && isValidPassword(password) && isValidConfirmPassword(password,confirmPassword))
+        if(checkName(name) && checkPhone(phone) && isValidPassword(password) && isValidConfirmPassword(password,confirmPassword))
         {
+
             return true;
         }
 

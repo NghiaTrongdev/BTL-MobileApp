@@ -4,16 +4,23 @@ package com.example.btlmobileapp.Activities;
 import static java.security.AccessController.getContext;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -333,6 +340,47 @@ public class MainActivity extends AppCompatActivity {
             binding.progess.setVisibility(View.INVISIBLE);
             binding.layoutMain.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void getContactsData() {
+        List<String> contactList = new ArrayList<>();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
+            return;
+        }
+
+        ContentResolver contentResolver = getContentResolver();
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = {
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
+
+        Cursor cursor = contentResolver.query(uri, projection, null, null, null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+
+                if (nameIndex != -1 && phoneIndex != -1) {
+                    String name = cursor.getString(nameIndex);
+                    String phone = cursor.getString(phoneIndex);
+
+                    User user = new User();
+                    user.name = name;
+                    user.phoneNumber = phone;
+                }
+            }
+
+
+            cursor.close();
+        } else {
+            Toast.makeText(this, "Không tìm thấy thông tin danh bạ", Toast.LENGTH_SHORT).show();
+        }
+
+        Toast.makeText(this, "Size" + contactList.size(), Toast.LENGTH_SHORT).show();
     }
 
 

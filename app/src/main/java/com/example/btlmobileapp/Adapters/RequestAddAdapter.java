@@ -53,7 +53,7 @@ public class RequestAddAdapter extends RecyclerView.Adapter<RequestAddAdapter.Re
         void setData(User user){
             binding.imageItem.setImageBitmap(getUserImage(user.image));
             binding.singleName.setText(user.name);
-            binding.btnStatus.setText("Chấp nhận");
+            binding.btnStatus.setHint("Chấp nhận");
         }
         void listener(){
             binding.btnStatus.setOnClickListener(v->{

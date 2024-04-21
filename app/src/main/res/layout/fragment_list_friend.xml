@@ -4,15 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".Fragments.FragmentListFriend">
 
-    <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:gravity="center"-->
-<!--        android:text="@string/listfiend" />-->
+
 
     <LinearLayout
         android:id="@+id/linear"
@@ -26,7 +21,7 @@
             android:id="@+id/b"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#FFFFFF">
+          >
 
             <Button
                 android:id="@+id/btnTypFriends"
@@ -38,7 +33,7 @@
                 android:backgroundTint="#F1F1F1"
                 android:backgroundTintMode="add"
                 android:text="Friends"
-                android:textColor="#0000FF"
+                android:textColor="@color/text_blue"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,6 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
+
         android:layout_height="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -71,10 +67,9 @@
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
-            android:padding="5dp"
+            android:padding="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         <ProgressBar
             android:id="@+id/progress"
