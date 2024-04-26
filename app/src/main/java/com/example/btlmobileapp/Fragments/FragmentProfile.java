@@ -1,10 +1,13 @@
 package com.example.btlmobileapp.Fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,10 +82,19 @@ public class FragmentProfile extends Fragment {
         binding = FragmentProfileBinding.inflate(getLayoutInflater(), container, false);
         preferenceManager = new PreferenceManager(getContext());
         setListeners();
+        init();
+
         // Inflate the layout for this fragment
         return binding.getRoot();
     }
-
+    private void init(){
+        binding.imageProfile.setImageBitmap(getUserImage(preferenceManager.getString(Constants.KEY_IMAGE)));
+        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
+    }
+    private Bitmap getUserImage(String encodedImage) {
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }

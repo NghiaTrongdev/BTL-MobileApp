@@ -6,48 +6,32 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:background="@color/black"
+    android:padding="20dp"
     tools:context=".Activities.ChatActivity">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <FrameLayout
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        >
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/buttonSearch"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/back_icon"
-            app:tint="@color/white"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/main"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/buttonSearch"
-            android:layout_marginStart="20dp"
-            android:textStyle="normal"
-            android:textColor="@color/white"
-            android:textSize="17sp"
-            android:text="Tìm kiếm"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:overScrollMode="never"
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <View
-        android:id="@+id/viewSupport"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintStart_toStartOf="parent"
-        android:alpha="0.5"
-        />
+            />
+        <ProgressBar
+            android:id="@+id/progess"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            />
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

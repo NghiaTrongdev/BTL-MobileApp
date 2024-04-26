@@ -10,7 +10,7 @@ import com.example.btlmobileapp.Utilities.Constants;
 public class LoginSuccessNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(Constants.LOGIN_SUCCESS))
+        if (intent.getAction().equals("MyAction"))
         {
             Toast.makeText(context, "Login success", Toast.LENGTH_SHORT).show();
         }

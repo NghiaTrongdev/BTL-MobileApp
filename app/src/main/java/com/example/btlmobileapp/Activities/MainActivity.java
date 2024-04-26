@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
 
+            binding.textNotification.setVisibility(View.INVISIBLE);
+            binding.layoutMain.setVisibility(View.VISIBLE);
              replaceFragment(new FragmentHome());
         });
 
@@ -95,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
+
+            binding.textNotification.setVisibility(View.INVISIBLE);
+            binding.layoutMain.setVisibility(View.VISIBLE);
             replaceFragment(new FragmentProfile());
         });
 
@@ -102,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
             binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
             binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
+
+            binding.textNotification.setVisibility(View.INVISIBLE);
+            binding.layoutMain.setVisibility(View.VISIBLE);
 
             replaceFragment(new FragmentListFriend());
         });
@@ -141,6 +149,16 @@ public class MainActivity extends AppCompatActivity {
             binding.inputSearch.clearFocus();
             binding.textSearch.setVisibility(View.VISIBLE);
             binding.inputSearch.setVisibility(View.INVISIBLE);
+
+            binding.textNotification.setVisibility(View.INVISIBLE);
+            binding.layoutMain.setVisibility(View.VISIBLE);
+
+            binding.imageHome.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.purple));
+            binding.imageAccount.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
+            binding.imageListFriend.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.blue_background));
+
+            binding.textNotification.setVisibility(View.INVISIBLE);
+            binding.layoutMain.setVisibility(View.VISIBLE);
             replaceFragment(new FragmentHome());
         });
 
@@ -185,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         isLoading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
-                .whereEqualTo(Constants.KEY_PHONE, stringQuery)
+                .whereLessThanOrEqualTo(Constants.KEY_PHONE, stringQuery)
                 .get()
                 .addOnCompleteListener(task ->{
                     if (task.isSuccessful() && task.getResult() != null){
@@ -323,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
             relationship.put(Constants.KEY_RELATION_STATUS, "Init");
             database.collection(Constants.KEY_RELATION_COLLECTION).add(relationship)
                     .addOnCompleteListener(task -> {
-                        showToast("Relationship added successfully");
+//                        showToast("Relationship added successfully");
                     })
                     .addOnFailureListener(e -> {
                         showToast("Failed to add relationship: " + e.getMessage());

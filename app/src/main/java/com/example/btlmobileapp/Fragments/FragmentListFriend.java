@@ -160,12 +160,6 @@ public class FragmentListFriend extends Fragment {
                     showToast(e.getMessage());
                 });
     }
-//    private CompletableFuture<Boolean> getFriendData(){
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//
-//    }
-
-
     private void isLoading(boolean temp){
         if(temp){
             binding.progress.setVisibility(View.VISIBLE);
