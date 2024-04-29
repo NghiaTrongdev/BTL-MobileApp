@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
             relationship.put(Constants.KEY_RELATION_ID, relationshipId);
             relationship.put(Constants.KEY_RELATION_SENDER_ID, userId1);
             relationship.put(Constants.KEY_RELATION_RECEIVED, userId2);
-            relationship.put(Constants.KEY_RELATION_STATUS, "Init");
+            relationship.put(Constants.KEY_RELATION_STATUS, "request");
             database.collection(Constants.KEY_RELATION_COLLECTION).add(relationship)
                     .addOnCompleteListener(task -> {
 //                        showToast("Relationship added successfully");

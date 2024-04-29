@@ -84,6 +84,7 @@ public class FragmentHome extends Fragment {
     }
 
     private void getAllUser(){
+        isLoading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .whereNotEqualTo(Constants.KEY_USER_ID,preferenceManager.getString(Constants.KEY_USER_ID))
@@ -110,11 +111,15 @@ public class FragmentHome extends Fragment {
                             listUser.add(user);
                         }
                         if (listUser.size() > 0){
+                            isLoading(false);
                             adapter = new ListFriendAdapter(listUser);
                             binding.main.setAdapter(adapter);
                         }
 
                     }
+                })
+                .addOnFailureListener(v->{
+                    isLoading(false);
                 });
     }
     @Override
@@ -123,5 +128,14 @@ public class FragmentHome extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater,container,false);
         return binding.getRoot();
+    }
+    private void isLoading(boolean temp){
+        if(temp){
+            binding.progess.setVisibility(View.VISIBLE);
+            binding.main.setVisibility(View.GONE);
+        } else {
+            binding.progess.setVisibility(View.INVISIBLE);
+            binding.main.setVisibility(View.VISIBLE);
+        }
     }
 }

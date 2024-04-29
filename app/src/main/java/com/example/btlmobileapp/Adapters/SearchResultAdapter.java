@@ -52,7 +52,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User currentUser = listUser.get(position);
         holder.setData(currentUser);
-        String testId = "user003";
+        String testId = preferenceManager.getString(Constants.KEY_USER_ID);
         getRelationshipStatus(testId, currentUser.id)
                 .thenAccept(status -> {
                     if (status.equals("Init")) {

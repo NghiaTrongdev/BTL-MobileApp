@@ -36,6 +36,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class SignInActivity extends AppCompatActivity {
@@ -154,8 +157,13 @@ public class SignInActivity extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
 
 //                        preferenceManager.putBoolean(Constants.KEY_IS_ONLINE, true);
+                        Date createDate = documentSnapshot.getDate(Constants.KEY_CREATE_DATE);
                         preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getString(Constants.KEY_USER_ID));
                         preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                        preferenceManager.putString(Constants.KEY_EMAIL,documentSnapshot.getString(Constants.KEY_EMAIL));
+                        preferenceManager.putString(Constants.KEY_PHONE,documentSnapshot.getString(Constants.KEY_PHONE));
+                        String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(createDate);
+                        preferenceManager.putString(Constants.KEY_DATE_OF_BIRTH,dateString);
                         preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
                         preferenceManager.putString(Constants.KEY_PASSWORD,documentSnapshot.getString(Constants.KEY_PASSWORD));
 
@@ -224,4 +232,5 @@ public class SignInActivity extends AppCompatActivity {
         }
         return false;
     }
+
 }
