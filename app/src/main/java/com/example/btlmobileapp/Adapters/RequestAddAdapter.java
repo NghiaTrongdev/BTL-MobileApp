@@ -25,12 +25,11 @@ public class RequestAddAdapter extends RecyclerView.Adapter<RequestAddAdapter.Re
     @NonNull
     @Override
     public RequestHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemContainerForSearchBinding itemContainerForSearchBinding = ItemContainerForSearchBinding.inflate(
+        ItemContainerForSearchBinding binding = ItemContainerForSearchBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
-                parent,
-                false
+                parent,false
         );
-        return new  RequestHolder(itemContainerForSearchBinding);
+        return new  RequestHolder(binding);
     }
 
     @Override
@@ -45,9 +44,9 @@ public class RequestAddAdapter extends RecyclerView.Adapter<RequestAddAdapter.Re
 
     class RequestHolder extends RecyclerView.ViewHolder{
         ItemContainerForSearchBinding binding;
-        RequestHolder(ItemContainerForSearchBinding itemContainerForSearchBinding){
+        public RequestHolder(ItemContainerForSearchBinding itemContainerForSearchBinding){
             super(itemContainerForSearchBinding.getRoot());
-            binding = itemContainerForSearchBinding;
+            this.binding = itemContainerForSearchBinding;
         }
 
         void setData(User user){
@@ -55,11 +54,11 @@ public class RequestAddAdapter extends RecyclerView.Adapter<RequestAddAdapter.Re
             binding.singleName.setText(user.name);
             binding.btnStatus.setHint("Chấp nhận");
         }
-        void listener(){
-            binding.btnStatus.setOnClickListener(v->{
-                // Update status realtionship
-            });
-        }
+//        void listener(){
+//            binding.btnStatus.setOnClickListener(v->{
+//                // Update status realtionship
+//            });
+//        }
     }
     private Bitmap getUserImage(String encodedImage) {
         byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);

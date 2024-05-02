@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.btlmobileapp.Adapters.ListFriendAdapter;
+import com.example.btlmobileapp.Adapters.RequestAddAdapter;
 import com.example.btlmobileapp.Adapters.SearchResultAdapter;
 import com.example.btlmobileapp.Models.User;
 import com.example.btlmobileapp.R;
@@ -29,6 +30,8 @@ import java.util.List;
  */
 public class FragmentHome extends Fragment {
     FragmentHomeBinding binding;
+    private RequestAddAdapter requestAddAdapter;
+
     private PreferenceManager preferenceManager;
     private ListFriendAdapter adapter;
     private List<User> listUser;

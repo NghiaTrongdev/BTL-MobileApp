@@ -28,6 +28,9 @@ import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.Utilities.PreferenceManager;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
 import com.example.btlmobileapp.databinding.FragmentListFriendBinding;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -85,48 +88,108 @@ public class FragmentListFriend extends Fragment {
 //
 //                    }
 //                });
-        getAllrequest();
+        getAllRequests();
     }
-    private void getAllrequest(){
+    private void getAllRequests() {
         isLoading(true);
         listUser = new ArrayList<>();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection(Constants.KEY_RELATION_COLLECTION)
-                .whereEqualTo(Constants.KEY_RELATION_RECEIVED,preferenceManager.getString(Constants.KEY_USER_ID))
-                .get()
-                .addOnCompleteListener(task ->{
-                    if (task.isSuccessful()){
-                        QuerySnapshot listSnaps = task.getResult();
-                        for (QueryDocumentSnapshot document : listSnaps){
-                            String senderId = document.getString(Constants.KEY_RELATION_SENDER_ID);
-                            database.collection(Constants.KEY_COLLECTION_USERS)
-                                    .whereEqualTo(Constants.KEY_USER_ID,senderId)
-                                    .get()
-                                    .addOnCompleteListener(userTask ->{
-                                        if (userTask.isSuccessful()){
-                                            DocumentSnapshot documentSnapshot = userTask.getResult().getDocuments().get(0);
-                                            if (documentSnapshot!=null){
-                                                User user = new User();
-                                                user.image = documentSnapshot.getString(Constants.KEY_IMAGE);
-                                                user.id = documentSnapshot.getString(Constants.KEY_USER_ID);
-                                                user.name = documentSnapshot.getString(Constants.KEY_NAME);
-                                                user.phoneNumber = documentSnapshot.getString(Constants.KEY_PHONE);
 
+        database.collection(Constants.KEY_RELATION_COLLECTION)
+                .whereEqualTo(Constants.KEY_RELATION_RECEIVED, preferenceManager.getString(Constants.KEY_USER_ID))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot listSnaps = task.getResult();
+                        List<Task<User>> userTasks = new ArrayList<>(); // Danh sách tạm thời các tác vụ người dùng
+                        for (QueryDocumentSnapshot document : listSnaps) {
+                            String senderId = document.getString(Constants.KEY_RELATION_SENDER_ID);
+                            Task<User> userTask = getUserDetails(database, senderId);
+                            userTasks.add(userTask);
+                        }
+
+                        // Chạy tất cả các tác vụ người dùng
+                        Tasks.whenAllComplete(userTasks)
+                                .addOnCompleteListener(completeTask -> {
+                                    for (Task<User> x : userTasks) {
+                                        if (x.isSuccessful()) {
+                                            User user = x.getResult();
+                                            if (user != null) {
                                                 listUser.add(user);
                                             }
-
-
+                                        } else {
+                                            // Xử lý lỗi nếu cần
                                         }
-                                    });
-                        }
-                        if (listUser.size()>0){
-                            isLoading(false);
-                            adapter = new ListFriendAdapter(listUser);
-                            binding.main.setAdapter(adapter);
-                        }
+                                    }
+
+                                    // Cập nhật giao diện nếu danh sách người dùng không rỗng
+                                    if (!listUser.isEmpty()) {
+                                        isLoading(false);
+                                        adapter = new ListFriendAdapter(requestUserList);
+                                        binding.main.setAdapter(adapter);
+                                    }
+                                });
+                    } else {
+                        // Xử lý lỗi nếu cần
                     }
                 });
     }
+
+    private Task<User> getUserDetails( String userId) {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        TaskCompletionSource<User> taskCompletionSource = new TaskCompletionSource<>();
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo(Constants.KEY_USER_ID, userId)
+                .get()
+                .addOnCompleteListener(userTask -> {
+                    if (userTask.isSuccessful()) {
+                        QuerySnapshot userSnapshot = userTask.getResult();
+                        if (!userSnapshot.isEmpty()) {
+                            DocumentSnapshot documentSnapshot = userSnapshot.getDocuments().get(0);
+                            User user = new User();
+                            user.image = documentSnapshot.getString(Constants.KEY_IMAGE);
+                            user.id = documentSnapshot.getString(Constants.KEY_USER_ID);
+                            user.name = documentSnapshot.getString(Constants.KEY_NAME);
+                            user.phoneNumber = documentSnapshot.getString(Constants.KEY_PHONE);
+                            taskCompletionSource.setResult(user);
+                        } else {
+                            taskCompletionSource.setException(new Exception("User not found"));
+                        }
+                    } else {
+                        taskCompletionSource.setException(userTask.getException());
+                    }
+                });
+        return taskCompletionSource.getTask();
+    }
+
+
+    private Task<User> getUserDetails(FirebaseFirestore database, String userId) {
+        TaskCompletionSource<User> taskCompletionSource = new TaskCompletionSource<>();
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo(Constants.KEY_USER_ID, userId)
+                .get()
+                .addOnCompleteListener(userTask -> {
+                    if (userTask.isSuccessful()) {
+                        QuerySnapshot userSnapshot = userTask.getResult();
+                        if (!userSnapshot.isEmpty()) {
+                            DocumentSnapshot documentSnapshot = userSnapshot.getDocuments().get(0);
+                            User user = new User();
+                            user.image = documentSnapshot.getString(Constants.KEY_IMAGE);
+                            user.id = documentSnapshot.getString(Constants.KEY_USER_ID);
+                            user.name = documentSnapshot.getString(Constants.KEY_NAME);
+                            user.phoneNumber = documentSnapshot.getString(Constants.KEY_PHONE);
+                            taskCompletionSource.setResult(user);
+                        } else {
+                            taskCompletionSource.setException(new Exception("User not found"));
+                        }
+                    } else {
+                        taskCompletionSource.setException(userTask.getException());
+                    }
+                });
+        return taskCompletionSource.getTask();
+    }
+
+
     private void getAllUser(){
         isLoading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
