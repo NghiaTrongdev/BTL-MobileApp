@@ -28,6 +28,8 @@ import com.example.btlmobileapp.Utilities.Constants;
 import com.example.btlmobileapp.Utilities.PreferenceManager;
 import com.example.btlmobileapp.databinding.ActivityMainBinding;
 import com.example.btlmobileapp.databinding.FragmentListFriendBinding;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -85,48 +87,51 @@ public class FragmentListFriend extends Fragment {
 //
 //                    }
 //                });
-        getAllrequest();
+        //getAllrequest();
+        getAllUser();
     }
-    private void getAllrequest(){
-        isLoading(true);
-        listUser = new ArrayList<>();
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection(Constants.KEY_RELATION_COLLECTION)
-                .whereEqualTo(Constants.KEY_RELATION_RECEIVED,preferenceManager.getString(Constants.KEY_USER_ID))
-                .get()
-                .addOnCompleteListener(task ->{
-                    if (task.isSuccessful()){
-                        QuerySnapshot listSnaps = task.getResult();
-                        for (QueryDocumentSnapshot document : listSnaps){
-                            String senderId = document.getString(Constants.KEY_RELATION_SENDER_ID);
-                            database.collection(Constants.KEY_COLLECTION_USERS)
-                                    .whereEqualTo(Constants.KEY_USER_ID,senderId)
-                                    .get()
-                                    .addOnCompleteListener(userTask ->{
-                                        if (userTask.isSuccessful()){
-                                            DocumentSnapshot documentSnapshot = userTask.getResult().getDocuments().get(0);
-                                            if (documentSnapshot!=null){
-                                                User user = new User();
-                                                user.image = documentSnapshot.getString(Constants.KEY_IMAGE);
-                                                user.id = documentSnapshot.getString(Constants.KEY_USER_ID);
-                                                user.name = documentSnapshot.getString(Constants.KEY_NAME);
-                                                user.phoneNumber = documentSnapshot.getString(Constants.KEY_PHONE);
-
-                                                listUser.add(user);
-                                            }
-
-
-                                        }
-                                    });
-                        }
-                        if (listUser.size()>0){
-                            isLoading(false);
-                            adapter = new ListFriendAdapter(listUser);
-                            binding.main.setAdapter(adapter);
-                        }
-                    }
-                });
-    }
+//    private void getAllrequest() {
+//        isLoading(true);
+//        listUser = new ArrayList<>();
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        Task<List<QuerySnapshot>> allTasks = new ArrayList<>();
+//        database.collection(Constants.KEY_RELATION_COLLECTION)
+//                .whereEqualTo(Constants.KEY_RELATION_RECEIVED, preferenceManager.getString(Constants.KEY_USER_ID))
+//                .get()
+//                .addOnSuccessListener(listSnaps -> {
+//                    List<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document : listSnaps) {
+//                        String senderId = document.getString(Constants.KEY_RELATION_SENDER_ID);
+//                        Task<DocumentSnapshot> userTask = database.collection(Constants.KEY_COLLECTION_USERS)
+//                                .document(senderId)
+//                                .get();
+//                        userTasks.add(userTask);
+//                    }
+//                    allTasks = Tasks.whenAllComplete(userTasks);
+//                })
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        for (Task<DocumentSnapshot> userTask : allTasks.getResult()) {
+//                            DocumentSnapshot documentSnapshot = userTask.getResult();
+//                            if (documentSnapshot != null && documentSnapshot.exists()) {
+//                                User user = new User();
+//                                user.image = documentSnapshot.getString(Constants.KEY_IMAGE);
+//                                user.id = documentSnapshot.getString(Constants.KEY_USER_ID);
+//                                user.name = documentSnapshot.getString(Constants.KEY_NAME);
+//                                user.phoneNumber = documentSnapshot.getString(Constants.KEY_PHONE);
+//                                listUser.add(user);
+//                            }
+//                        }
+//                        if (!listUser.isEmpty()) {
+//                            isLoading(false);
+//                            adapter = new ListFriendAdapter(listUser);
+//                            binding.main.setAdapter(adapter);
+//                        }
+//                    } else {
+//                        Log.e("getAllRequest", "Error getting documents: ", task.getException());
+//                    }
+//                });
+//    }
     private void getAllUser(){
         isLoading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
